@@ -3,45 +3,39 @@ import requests
 
 def cargar_configuracion(app_name, profile="default", config_server_url="http://localhost:7070"):
     url = f"{config_server_url}/{app_name}/{profile}"
-    response = requests.get(url)
-    
+    response = requests.get(url, auth=("admin", "admin123"))
+
     if response.status_code == 200:
         config = response.json()
+        print("CONFIG OBTENIDA:", config)
         propiedades = config.get("propertySources", [])
         
         resultado = {}
         for fuente in propiedades:
-            resultado.update(fuente["source"])  # fusiona todas las configuraciones
+            resultado.update(fuente["source"])
         
         return resultado
     else:
         print("Error al obtener la configuración del servidor:", response.status_code)
         return {}
-
 def obtener_conexion():
-    # Cargar configuración desde el servidor
     config = cargar_configuracion("servicio-proveedor")
 
-    # Verificar si la URL de la base de datos existe y tiene el formato esperado
-    db_url = config.get("spring.datasource.url", "")
-    
-    if not db_url:
+    db_url = config.get("spring.jpa.datasource.url", "")
+
+    if not db_url.startswith("jdbc:mysql://"):
         raise ValueError("La URL de la base de datos no está configurada correctamente.")
     
-    # Intentar dividir la URL y obtener los valores de host, puerto y base de datos
     try:
-        # Si el formato es 'jdbc:mysql://localhost:3306/proveedor_db', lo dividimos
         host = db_url.split("://")[1].split("/")[0].split(":")[0]
         port = db_url.split("://")[1].split("/")[0].split(":")[1]
         database = db_url.split("/")[-1]
     except IndexError:
-        raise ValueError("Error al analizar la URL de la base de datos. Asegúrate de que tenga el formato correcto.")
+        raise ValueError("Error al analizar la URL de la base de datos.")
     
-    # Obtener el usuario y la contraseña de la configuración
-    user = config.get("spring.datasource.username", "root")
-    password = config.get("spring.datasource.password", "")
+    user = config.get("spring.jpa.datasource.username", "root")
+    password = config.get("spring.jpa.datasource.password", "")
 
-    # Conectar a la base de datos MySQL
     return mysql.connector.connect(
         host=host,
         port=port,
@@ -50,7 +44,7 @@ def obtener_conexion():
         database=database
     )
 
-# Funciones CRUD para proveedores
+
 def crear_proveedor(nombre, telefono, direccion, email):
     conexion = obtener_conexion()
     cursor = conexion.cursor()
