@@ -1,5 +1,5 @@
 server:
-  port: 9000 # Puerto donde corre el Gateway
+  port: 9000
 
 eureka:
   client:
@@ -20,3 +20,4 @@ spring:
           uri: lb://servicio-proveedor  # Uso de Eureka para el descubrimiento del servicio
           predicates:
             - Path=/proveedores/**  # El path que se usará en las rutas del Gateway
+debug: true
