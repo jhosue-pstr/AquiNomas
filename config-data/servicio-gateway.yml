@@ -1,5 +1,5 @@
 server:
-  port: 8081  # Puerto donde corre el Gateway
+  port: 9000 # Puerto donde corre el Gateway
 
 eureka:
   client:
