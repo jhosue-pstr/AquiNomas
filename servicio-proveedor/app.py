@@ -33,6 +33,5 @@ def eliminar(proveedor_id):
     return jsonify({"mensaje": "Proveedor eliminado correctamente"})
 
 
-if __name__ == '__main__':
-    port = int(app.config.get("server.port", 5001))
-    app.run(debug=True, port=port)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5001)
