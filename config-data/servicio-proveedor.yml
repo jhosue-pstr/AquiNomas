@@ -26,13 +26,13 @@ spring:
           enable: true
       routes:
         - id: servicio-proveedor
-          uri: lb://servicio-proveedor #
+          uri: lb://SERVICIO-PROVEEDOR
           predicates:
             - Path=/proveedores/**
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8090/eureka  # Dirección de Eureka
+      defaultZone: http://localhost:8090/eureka
   instance:
     hostname: localhost
