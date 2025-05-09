@@ -1,0 +1,22 @@
+server:
+  port: 8081  # Puerto donde corre el Gateway
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8080/eureka}  # URL del servicio Eureka
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    hostname: localhost
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enable: true
+      routes:
+        - id: servicio-proveedor  # Nombre del servicio registrado en Eureka
+          uri: lb://servicio-proveedor  # Uso de Eureka para el descubrimiento del servicio
+          predicates:
+            - Path=/proveedores/**  # El path que se usará en las rutas del Gateway
