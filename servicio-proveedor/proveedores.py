@@ -1,5 +1,12 @@
 import mysql.connector
 import requests
+import py_eureka_client.eureka_client as eureka_client
+
+eureka_client.init(eureka_server="http://localhost:8080",  
+                   app_name="servicio-proveedor",               
+                   instance_id="servicio-proveedor-local",       
+                   health_check_url="/health",                  
+                   home_page_url="http://localhost:8080")     
 
 def cargar_configuracion(app_name, profile="default", config_server_url="http://localhost:7070"):
     url = f"{config_server_url}/{app_name}/{profile}"

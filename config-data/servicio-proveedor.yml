@@ -1,11 +1,13 @@
 server:
   port: 8081
+
 springdoc:
   api-docs:
     enabled: true
   swagger-ui:
     enabled: true
     path: /doc/swagger-ui.html
+
 spring:
   jpa:
     hibernate.ddl-auto: update
@@ -16,9 +18,21 @@ spring:
       url: jdbc:mysql://localhost:3306/proveedor_db
       username: root
       password:
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enable: true
+      routes:
+        - id: servicio-proveedor
+          uri: lb://servicio-proveedor #
+          predicates:
+            - Path=/proveedores/**
+
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8090/eureka
+      defaultZone: http://localhost:8090/eureka  # Dirección de Eureka
   instance:
     hostname: localhost
