@@ -1,0 +1,18 @@
+#spring.application.name=servicio_configuracion
+
+server:
+  port: 7070
+
+
+
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/jhosue-pstr/AquiNomas.git
+          searchPaths: config-data
+          default-label: main
