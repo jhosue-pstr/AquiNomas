@@ -16,3 +16,4 @@ spring:
           uri: https://github.com/jhosue-pstr/AquiNomas.git
           searchPaths: config-data
           default-label: main
+
