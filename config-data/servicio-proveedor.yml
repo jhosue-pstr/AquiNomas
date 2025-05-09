@@ -1,22 +1,38 @@
 server:
-  port: 5001  # Puerto donde corre el servicio de proveedores
-  # Puedes poner cualquier otro puerto si es necesario.
+  port: 5001
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /doc/swagger-ui.html
 
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/proveedor_db
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: password  # Cambia según tus credenciales
   jpa:
     hibernate.ddl-auto: update
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    generate-ddl: true
+    show_sql: true
+    datasource:
+      driverClassName: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/proveedor_db
+      username: root
+      password:
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enable: true
+      routes:
+        - id: servicio-proveedor
+          uri: lb://servicio-proveedor
+          predicates:
+            - Path=/proveedores/**
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:http://localhost:8080/eureka}  # Cambia la URL según la dirección de tu Eureka
+      defaultZone: http://localhost:8080/eureka
   instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
     hostname: localhost
-    # Otros parámetros de instancia si lo necesitas
