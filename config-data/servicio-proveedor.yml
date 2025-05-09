@@ -26,7 +26,7 @@ spring:
           enable: true
       routes:
         - id: servicio-proveedor
-          uri: lb://SERVICIO-PROVEEDOR
+          uri: lb://servicio-proveedor
           predicates:
             - Path=/proveedores/**
 
