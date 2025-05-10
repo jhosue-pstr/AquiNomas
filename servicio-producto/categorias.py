@@ -1,5 +1,3 @@
-#productos.py 
-
 import mysql.connector
 import requests
 import py_eureka_client.eureka_client as eureka_client
@@ -57,67 +55,43 @@ def obtener_conexion():
         password=password,
         database=database
     )
-def obtener_categoria_por_id(categoria_id):
-    try:
-        response = requests.get(f"http://localhost:5002/categorias/{categoria_id}")
-        if response.status_code == 200:
-            return response.json()
-        else:
-            return {"error": "Categoría no encontrada"}
-    except Exception as e:
-        return {"error": f"Error al obtener la categoría: {str(e)}"}
 
 
-
-
-def crear_producto(nombre, categoria_id, descripcion, precio, stock):
+def crear_categoria(nombre):
     conexion = obtener_conexion()
     cursor = conexion.cursor()
-    cursor.execute("""
-        INSERT INTO producto (nombre, categoria_id, descripcion, precio, stock) 
-        VALUES (%s, %s, %s, %s, %s)
-    """, (nombre, categoria_id, descripcion, precio, stock))
+    cursor.execute("INSERT INTO categoria (nombre) VALUES (%s)", (nombre,))
     conexion.commit()
     conexion.close()
 
-def obtener_productos():
-    try:
-        conexion = obtener_conexion()
-        cursor = conexion.cursor(dictionary=True)
-        cursor.execute("SELECT id, nombre, categoria_id, descripcion, precio, stock FROM producto")
-        productos = cursor.fetchall()
-        conexion.close()
-
-        for producto in productos:
-            categoria_info = obtener_categoria_por_id(producto['categoria_id'])
-            producto['categoria'] = categoria_info
-
-        return productos
-    except Exception as e:
-        return {"error": f"Error al obtener los productos: {str(e)}"}
-
-def obtener_producto_por_id(producto_id):
+def obtener_categorias():
     conexion = obtener_conexion()
     cursor = conexion.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM producto WHERE id = %s", (producto_id,))
-    producto = cursor.fetchone()
+    cursor.execute("SELECT * FROM categoria")
+    categorias = cursor.fetchall()
     conexion.close()
-    return producto
+    return categorias
 
-def actualizar_producto(producto_id, nombre, categoria_id, descripcion, precio, stock):
+def obtener_categoria_por_id(categoria_id):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM categoria WHERE id = %s", (categoria_id,))
+    categoria = cursor.fetchone()
+    conexion.close()
+    return categoria
+
+def actualizar_categoria(categoria_id, nombre):
     conexion = obtener_conexion()
     cursor = conexion.cursor()
     cursor.execute("""
-        UPDATE producto 
-        SET nombre = %s, categoria_id = %s, descripcion = %s, precio = %s, stock = %s
-        WHERE id = %s
-    """, (nombre, categoria_id, descripcion, precio, stock, producto_id))
+        UPDATE categoria SET nombre = %s WHERE id = %s
+    """, (nombre, categoria_id))
     conexion.commit()
     conexion.close()
 
-def eliminar_producto(producto_id):
+def eliminar_categoria(categoria_id):
     conexion = obtener_conexion()
     cursor = conexion.cursor()
-    cursor.execute("DELETE FROM producto WHERE id = %s", (producto_id,))
+    cursor.execute("DELETE FROM categoria WHERE id = %s", (categoria_id,))
     conexion.commit()
     conexion.close()
