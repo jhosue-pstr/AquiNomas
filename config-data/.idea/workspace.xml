@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="681ba286-d33c-406b-aca0-a61ed1b0fdef" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../servicio-gateway/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-gateway/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../servicio-gateway/src/main/java/com/example/serviciogateway/ServicioGatewayApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-gateway/src/main/java/com/example/serviciogateway/ServicioGatewayApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../servicio_configuracion/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio_configuracion/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,21 +24,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/jhosue/Programacion/AquiNomas/config-data&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "pastor",
+    "last_opened_file_path": "/home/jhosue/Programacion/AquiNomas/config-data",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -58,6 +57,7 @@
       <workItem from="1746823544667" duration="5000" />
       <workItem from="1746895481162" duration="433000" />
       <workItem from="1746895967284" duration="1756000" />
+      <workItem from="1746904511891" duration="726000" />
     </task>
     <servers />
   </component>
