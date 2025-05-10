@@ -15,7 +15,7 @@ eureka_client.init(
 
 def cargar_configuracion(app_name, profile="default", config_server_url="http://localhost:7070"):
     url = f"{config_server_url}/{app_name}/{profile}"
-    response = requests.get(url, auth=("admin", "admin123"))
+    response = requests.get(url, auth=("root", "123456"))
 
     if response.status_code == 200:
         config = response.json()

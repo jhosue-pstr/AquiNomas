@@ -1,8 +1,5 @@
 server:
-  port: 8091
-logging:
-  level:
-    root: DEBUG
+  port: 9000
 
 eureka:
   client:
@@ -19,8 +16,8 @@ spring:
         locator:
           enable: true
       routes:
-        - id: servicio-proveedor  # Nombre del servicio registrado en Eureka
-          uri: lb://servicio-proveedor  # Uso de Eureka para el descubrimiento del servicio
+        - id: servicio-proveedor
+          uri: lb://servicio-proveedor
           predicates:
-            - Path=/proveedores/**  # El path que se usará en las rutas del Gateway
-debug: true
+            - Path=/proveedores/**
+
