@@ -1,5 +1,7 @@
 server:
-  port: 5001
+#  port: 5001
+
+  port: ${PORT:${SERVER_PORT:0}}
 
 springdoc:
   api-docs:
@@ -15,7 +17,7 @@ spring:
     show_sql: true
     datasource:
       driverClassName: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/proveedor_db
+      url: jdbc:mysql://localhost:3306/inventario_db
       username: root
       password:
 

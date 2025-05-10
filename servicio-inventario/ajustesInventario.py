@@ -1,26 +1,25 @@
+# productos.py
+
 import mysql.connector
 import requests
 import py_eureka_client.eureka_client as eureka_client
 
 eureka_registered = False
-
 def registrar_en_eureka(puerto):
     global eureka_registered
     if not eureka_registered:
         eureka_client.init(
-            eureka_server="http://localhost:8090/eureka",
+            eureka_server="http://localhost:8090/eureka", 
             app_name="SERVICIO-PRODUCTO",
-            instance_id=f"servicio-producto-{puerto}",
-            health_check_url=f"http://localhost:{puerto}/health",
-            home_page_url=f"http://localhost:{puerto}",
-            instance_port=puerto,
+            instance_id=f"servicio-producto-{puerto}",  
+            health_check_url=f"http://localhost:{puerto}/health",  
+            home_page_url=f"http://localhost:{puerto}",  
+            instance_port=puerto,  
         )
         eureka_registered = True
         print(f"Instancia registrada en Eureka en el puerto {puerto}")
     else:
         print("Eureka client ya está registrado.")
- 
- 
 
 def cargar_configuracion(app_name, profile="default", config_server_url="http://localhost:7070"):
     url = f"{config_server_url}/{app_name}/{profile}"
@@ -39,8 +38,9 @@ def cargar_configuracion(app_name, profile="default", config_server_url="http://
     else:
         print("Error al obtener la configuración del servidor:", response.status_code)
         return {}
+
 def obtener_conexion():
-    config = cargar_configuracion("servicio-proveedor")
+    config = cargar_configuracion("servicio-producto")
 
     db_url = config.get("spring.jpa.datasource.url", "")
 
@@ -64,45 +64,3 @@ def obtener_conexion():
         password=password,
         database=database
     )
-
-
-def crear_proveedor(nombre, telefono, direccion, email):
-    conexion = obtener_conexion()
-    cursor = conexion.cursor()
-    cursor.execute("INSERT INTO proveedor (nombre, telefono, direccion, email) VALUES (%s, %s, %s, %s)",
-                   (nombre, telefono, direccion, email))
-    conexion.commit()
-    conexion.close()
-
-def obtener_proveedores():
-    conexion = obtener_conexion()
-    cursor = conexion.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM proveedor")
-    proveedores = cursor.fetchall()
-    conexion.close()
-    return proveedores
-
-def obtener_proveedor_por_id(proveedor_id):
-    conexion = obtener_conexion()
-    cursor = conexion.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM proveedor WHERE id = %s", (proveedor_id,))
-    proveedor = cursor.fetchone()
-    conexion.close()
-    return proveedor
-
-def actualizar_proveedor(proveedor_id, nombre, telefono, direccion, email):
-    conexion = obtener_conexion()
-    cursor = conexion.cursor()
-    cursor.execute("""
-        UPDATE proveedor SET nombre = %s, telefono = %s, direccion = %s, email = %s
-        WHERE id = %s
-    """, (nombre, telefono, direccion, email, proveedor_id))
-    conexion.commit()
-    conexion.close()
-
-def eliminar_proveedor(proveedor_id):
-    conexion = obtener_conexion()
-    cursor = conexion.cursor()
-    cursor.execute("DELETE FROM proveedor WHERE id = %s", (proveedor_id,))
-    conexion.commit()
-    conexion.close()

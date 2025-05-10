@@ -1,5 +1,6 @@
 server:
-  port: 5002
+#  port: 5002
+  port: ${PORT:${SERVER_PORT:0}}
 
 springdoc:
   api-docs:

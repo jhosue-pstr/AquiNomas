@@ -1,18 +1,29 @@
+# categorias.py
+
 import mysql.connector
 import requests
 import py_eureka_client.eureka_client as eureka_client
 
-eureka_client.init(
-    eureka_server="http://localhost:8090/eureka",
-    app_name="SERVICIO-PRODUCTO",
-    instance_id="servicio-producto-local",
-    health_check_url="http://localhost:5001/health",
-    home_page_url="http://localhost:5001",
-    instance_port=5001,  
-)
+eureka_registered = False
 
- 
+# Registrar el servicio en Eureka
+def registrar_en_eureka(puerto):
+    global eureka_registered
+    if not eureka_registered:
+        eureka_client.init(
+            eureka_server="http://localhost:8090/eureka",  # URL de Eureka
+            app_name="SERVICIO-PRODUCTO",  # Nombre del servicio registrado
+            instance_id=f"servicio-producto-{puerto}",  # ID único para la instancia
+            health_check_url=f"http://localhost:{puerto}/health",  # URL para chequear la salud
+            home_page_url=f"http://localhost:{puerto}",  # URL de la página principal
+            instance_port=puerto,  # Puerto donde corre el servicio
+        )
+        eureka_registered = True
+        print(f"Instancia registrada en Eureka en el puerto {puerto}")
+    else:
+        print("Eureka client ya está registrado.")
 
+# Cargar la configuración desde el servidor de configuración
 def cargar_configuracion(app_name, profile="default", config_server_url="http://localhost:7070"):
     url = f"{config_server_url}/{app_name}/{profile}"
     response = requests.get(url, auth=("root", "123456"))
@@ -30,6 +41,8 @@ def cargar_configuracion(app_name, profile="default", config_server_url="http://
     else:
         print("Error al obtener la configuración del servidor:", response.status_code)
         return {}
+
+# Obtener la conexión a la base de datos
 def obtener_conexion():
     config = cargar_configuracion("servicio-producto")
 
@@ -56,42 +69,3 @@ def obtener_conexion():
         database=database
     )
 
-
-def crear_categoria(nombre):
-    conexion = obtener_conexion()
-    cursor = conexion.cursor()
-    cursor.execute("INSERT INTO categoria (nombre) VALUES (%s)", (nombre,))
-    conexion.commit()
-    conexion.close()
-
-def obtener_categorias():
-    conexion = obtener_conexion()
-    cursor = conexion.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM categoria")
-    categorias = cursor.fetchall()
-    conexion.close()
-    return categorias
-
-def obtener_categoria_por_id(categoria_id):
-    conexion = obtener_conexion()
-    cursor = conexion.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM categoria WHERE id = %s", (categoria_id,))
-    categoria = cursor.fetchone()
-    conexion.close()
-    return categoria
-
-def actualizar_categoria(categoria_id, nombre):
-    conexion = obtener_conexion()
-    cursor = conexion.cursor()
-    cursor.execute("""
-        UPDATE categoria SET nombre = %s WHERE id = %s
-    """, (nombre, categoria_id))
-    conexion.commit()
-    conexion.close()
-
-def eliminar_categoria(categoria_id):
-    conexion = obtener_conexion()
-    cursor = conexion.cursor()
-    cursor.execute("DELETE FROM categoria WHERE id = %s", (categoria_id,))
-    conexion.commit()
-    conexion.close()

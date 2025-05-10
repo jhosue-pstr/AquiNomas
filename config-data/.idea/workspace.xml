@@ -4,7 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="681ba286-d33c-406b-aca0-a61ed1b0fdef" name="Changes" comment="" />
+    <list default="true" id="681ba286-d33c-406b-aca0-a61ed1b0fdef" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servicio-producto.yml" beforeDir="false" afterPath="$PROJECT_DIR$/servicio-producto.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servicio-proveedor.yml" beforeDir="false" afterPath="$PROJECT_DIR$/servicio-inventario.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../servicio-producto/app.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../servicio-producto/categorias.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../servicio-producto/productos.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../servicio-proveedor/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-proveedor/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../servicio-proveedor/proveedores.py" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-proveedor/proveedores.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -54,7 +63,7 @@
       <workItem from="1746823544667" duration="5000" />
       <workItem from="1746895481162" duration="433000" />
       <workItem from="1746895967284" duration="1756000" />
-      <workItem from="1746904511891" duration="1110000" />
+      <workItem from="1746904511891" duration="3601000" />
     </task>
     <servers />
   </component>
