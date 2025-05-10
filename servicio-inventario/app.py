@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
-import ajustesInventario
-import movimientosInventario
+import inventario
 import pybreaker
 import os
 import random
@@ -9,7 +8,7 @@ from tenacity import retry, stop_after_attempt, wait_fixed
 app = Flask(__name__)
 PORT = int(os.environ.get("PORT", random.randint(5001, 5999)))
 
-ajustesInventario.registrar_en_eureka(PORT)
+inventario.registrar_en_eureka(PORT)
 
 breaker = pybreaker.CircuitBreaker(fail_max=3, reset_timeout=10)
 
