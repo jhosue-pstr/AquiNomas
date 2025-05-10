@@ -3,7 +3,7 @@ import requests
 import py_eureka_client.eureka_client as eureka_client
 
 eureka_client.init(
-    eureka_server="http://localhost:8080/eureka",
+    eureka_server="http://localhost:8090/eureka",
     app_name="servicio-proveedor",
     instance_id="servicio-proveedor-local",
     health_check_url="http://localhost:5001/health",
