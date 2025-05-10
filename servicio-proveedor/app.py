@@ -1,14 +1,16 @@
 from flask import Flask, request, jsonify
 import proveedores
+import pybreaker
+from tenacity import retry, stop_after_attempt, wait_fixed
 
 app = Flask(__name__)
+
+breaker = pybreaker.CircuitBreaker(fail_max=3, reset_timeout=10)
+
 
 @app.route('/health')
 def health():
     return "OK", 200
-@app.route('/proveedores/test')
-def test():
-    return "Hola desde Flask proveedor"
 
 @app.route('/proveedores', methods=['POST'])
 def crear():
@@ -21,13 +23,6 @@ def listar():
     lista = proveedores.obtener_proveedores()
     return jsonify(lista)
 
-@app.route('/proveedores/<int:proveedor_id>', methods=['GET'])
-def obtener(proveedor_id):
-    proveedor = proveedores.obtener_proveedor_por_id(proveedor_id)
-    if proveedor:
-        return jsonify(proveedor)
-    return jsonify({"error": "Proveedor no encontrado"}), 404
-
 @app.route('/proveedores/<int:proveedor_id>', methods=['PUT'])
 def actualizar(proveedor_id):
     data = request.json
@@ -38,6 +33,33 @@ def actualizar(proveedor_id):
 def eliminar(proveedor_id):
     proveedores.eliminar_proveedor(proveedor_id)
     return jsonify({"mensaje": "Proveedor eliminado correctamente"})
+
+
+
+#circuit braker 
+
+@app.route('/proveedores/<int:proveedor_id>', methods=['GET'])
+def obtener(proveedor_id):
+    try:
+        return jsonify(call_with_resilience(proveedor_id))
+    except Exception:
+        return fallback_proveedor(proveedor_id)
+
+@retry(stop=stop_after_attempt(2), wait=wait_fixed(1))
+@breaker
+def call_with_resilience(proveedor_id):
+    proveedor = proveedores.obtener_proveedor_por_id(proveedor_id)
+    if proveedor:
+        return proveedor
+    raise Exception("Proveedor no encontrado")  
+def fallback_proveedor(proveedor_id):
+    return jsonify({
+        "id": proveedor_id,
+        "nombre": "Desconocido",
+        "mensaje": "Servicio no disponible - fallback activado"
+    }), 200
+
+
 
 
 if __name__ == "__main__":
