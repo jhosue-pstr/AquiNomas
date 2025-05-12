@@ -71,6 +71,7 @@ def crear_producto_proveedor(proveedor_id, producto_id):
     conexion.commit()
     conexion.close()
 
+
 def obtener_productos_proveedor():
     conexion = obtener_conexion()
     cursor = conexion.cursor(dictionary=True)
@@ -78,6 +79,7 @@ def obtener_productos_proveedor():
     relaciones = cursor.fetchall()
     conexion.close()
     return relaciones
+
 
 def obtener_relacion_por_id(proveedor_id, producto_id):
     conexion = obtener_conexion()
@@ -87,6 +89,19 @@ def obtener_relacion_por_id(proveedor_id, producto_id):
     relacion = cursor.fetchone()
     conexion.close()
     return relacion
+
+
+def actualizar_producto_proveedor(proveedor_id_actual, producto_id_actual, nuevo_proveedor_id, nuevo_producto_id):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    cursor.execute("""
+        UPDATE producto_proveedor 
+        SET proveedor_id = %s, producto_id = %s
+        WHERE proveedor_id = %s AND producto_id = %s
+    """, (nuevo_proveedor_id, nuevo_producto_id, proveedor_id_actual, producto_id_actual))
+    conexion.commit()
+    conexion.close()
+
 
 def eliminar_producto_proveedor(proveedor_id, producto_id):
     conexion = obtener_conexion()

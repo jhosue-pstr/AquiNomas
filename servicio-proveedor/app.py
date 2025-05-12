@@ -70,27 +70,27 @@ def fallback_proveedor(proveedor_id):
 #============================= productos proveedorer====================#
 
 @app.route('/productos-proveedores', methods=['POST'])
-def crear_relacion():
+def crear():
     data = request.json
     productosProveedores.crear_producto_proveedor(data['proveedor_id'], data['producto_id'])
     return jsonify({"mensaje": "Relación producto-proveedor creada exitosamente"}), 201
 
 @app.route('/productos-proveedores', methods=['GET'])
-def listar_relaciones():
+def listar():
     lista = productosProveedores.obtener_productos_proveedor()
     return jsonify(lista)
 
 @app.route('/productos-proveedores/<int:proveedor_id>/<int:producto_id>', methods=['DELETE'])
-def eliminar_relacion(proveedor_id, producto_id):
+def eliminar(proveedor_id, producto_id):
     productosProveedores.eliminar_producto_proveedor(proveedor_id, producto_id)
     return jsonify({"mensaje": "Relación producto-proveedor eliminada correctamente"})
 
 @app.route('/productos-proveedores/<int:proveedor_id>/<int:producto_id>', methods=['GET'])
-def obtener_relacion(proveedor_id, producto_id):
+def obtener(proveedor_id, producto_id):
     try:
         return jsonify(call_with_resilience(proveedor_id, producto_id))
     except Exception:
-        return fallback_relacion(proveedor_id, producto_id)
+        return fallback(proveedor_id, producto_id)
 
 @retry(stop=stop_after_attempt(2), wait=wait_fixed(1))
 @breaker
@@ -100,13 +100,12 @@ def call_with_resilience(proveedor_id, producto_id):
         return relacion
     raise Exception("Relación no encontrada")
 
-def fallback_relacion(proveedor_id, producto_id):
+def fallback(proveedor_id, producto_id):
     return jsonify({
         "proveedor_id": proveedor_id,
         "producto_id": producto_id,
         "mensaje": "Servicio no disponible - fallback activado"
     }), 200
-
 #======================= compras Proveedores =============+++#
 @app.route('/compras-proveedores', methods=['POST'])
 def crear_compra():

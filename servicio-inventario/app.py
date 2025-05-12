@@ -28,8 +28,8 @@ def crear_inventario():
     return jsonify({"mensaje": "Inventario creado exitosamente"}), 201
 
 @app.route('/inventario', methods=['GET'])
-def listar_inventario():
-    lista = inventario.obtener_inventario()
+def listar_inventarios():
+    lista = inventario.obtener_inventarios()
     return jsonify(lista)
 
 @app.route('/inventario/<int:producto_id>', methods=['GET'])
