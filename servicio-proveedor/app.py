@@ -17,6 +17,8 @@ breaker = pybreaker.CircuitBreaker(fail_max=3, reset_timeout=10)
 def health():
     return "OK", 200
 
+#===============RUTAS====================#
+#==========Proveedores===================#
 @app.route('/proveedores', methods=['POST'])
 def crear():
     data = request.json
@@ -39,9 +41,6 @@ def eliminar(proveedor_id):
     proveedores.eliminar_proveedor(proveedor_id)
     return jsonify({"mensaje": "Proveedor eliminado correctamente"})
 
-
-
-#circuit braker 
 
 @app.route('/proveedores/<int:proveedor_id>', methods=['GET'])
 def obtener(proveedor_id):

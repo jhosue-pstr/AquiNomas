@@ -1,20 +1,21 @@
+# categorias.py
+
 import mysql.connector
 import requests
 import py_eureka_client.eureka_client as eureka_client
 
 eureka_registered = False
 
-# Registrar el servicio en Eureka
 def registrar_en_eureka(puerto):
     global eureka_registered
     if not eureka_registered:
         eureka_client.init(
-            eureka_server="http://localhost:8090/eureka",  # URL de Eureka
-            app_name="SERVICIO-PRODUCTO",  # Nombre del servicio registrado
-            instance_id=f"servicio-producto-{puerto}",  # ID único para la instancia
-            health_check_url=f"http://localhost:{puerto}/health",  # URL para chequear la salud
-            home_page_url=f"http://localhost:{puerto}",  # URL de la página principal
-            instance_port=puerto,  # Puerto donde corre el servicio
+            eureka_server="http://localhost:8090/eureka",  
+            app_name="SERVICIO-PRODUCTO", 
+            instance_id=f"servicio-producto-{puerto}",  
+            health_check_url=f"http://localhost:{puerto}/health",  
+            home_page_url=f"http://localhost:{puerto}",  
+            instance_port=puerto,  
         )
         eureka_registered = True
         print(f"Instancia registrada en Eureka en el puerto {puerto}")
@@ -67,3 +68,48 @@ def obtener_conexion():
         database=database
     )
 
+
+
+def crear_inventario(producto_id, cantidad_disponible, fecha_vencimiento):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    cursor.execute("""
+        INSERT INTO inventario (producto_id, cantidad_disponible, fecha_vencimiento)
+        VALUES (%s, %s, %s)
+    """, (producto_id, cantidad_disponible, fecha_vencimiento))
+    conexion.commit()
+    conexion.close()
+
+def obtener_inventarios():
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM inventario")
+    inventarios = cursor.fetchall()
+    conexion.close()
+    return inventarios
+
+def obtener_inventario_por_producto(producto_id):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM inventario WHERE producto_id = %s", (producto_id,))
+    inventario = cursor.fetchone()
+    conexion.close()
+    return inventario
+
+def actualizar_inventario(producto_id, cantidad_disponible, fecha_vencimiento):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    cursor.execute("""
+        UPDATE inventario
+        SET cantidad_disponible = %s, fecha_vencimiento = %s
+        WHERE producto_id = %s
+    """, (cantidad_disponible, fecha_vencimiento, producto_id))
+    conexion.commit()
+    conexion.close()
+
+def eliminar_inventario(producto_id):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    cursor.execute("DELETE FROM inventario WHERE producto_id = %s", (producto_id,))
+    conexion.commit()
+    conexion.close()

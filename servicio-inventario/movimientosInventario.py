@@ -6,17 +6,16 @@ import py_eureka_client.eureka_client as eureka_client
 
 eureka_registered = False
 
-# Registrar el servicio en Eureka
 def registrar_en_eureka(puerto):
     global eureka_registered
     if not eureka_registered:
         eureka_client.init(
-            eureka_server="http://localhost:8090/eureka",  # URL de Eureka
-            app_name="SERVICIO-PRODUCTO",  # Nombre del servicio registrado
-            instance_id=f"servicio-producto-{puerto}",  # ID único para la instancia
-            health_check_url=f"http://localhost:{puerto}/health",  # URL para chequear la salud
-            home_page_url=f"http://localhost:{puerto}",  # URL de la página principal
-            instance_port=puerto,  # Puerto donde corre el servicio
+            eureka_server="http://localhost:8090/eureka",  
+            app_name="SERVICIO-PRODUCTO", 
+            instance_id=f"servicio-producto-{puerto}",  
+            health_check_url=f"http://localhost:{puerto}/health",  
+            home_page_url=f"http://localhost:{puerto}",  
+            instance_port=puerto,  
         )
         eureka_registered = True
         print(f"Instancia registrada en Eureka en el puerto {puerto}")
@@ -42,7 +41,6 @@ def cargar_configuracion(app_name, profile="default", config_server_url="http://
         print("Error al obtener la configuración del servidor:", response.status_code)
         return {}
 
-# Obtener la conexión a la base de datos
 def obtener_conexion():
     config = cargar_configuracion("servicio-producto")
 
@@ -69,3 +67,50 @@ def obtener_conexion():
         database=database
     )
 
+
+
+
+
+def crear_movimiento_inventario(producto_id, tipo_movimiento, cantidad):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    cursor.execute("""
+        INSERT INTO movimiento_inventario (producto_id, tipo_movimiento, cantidad)
+        VALUES (%s, %s, %s)
+    """, (producto_id, tipo_movimiento, cantidad))
+    conexion.commit()
+    conexion.close()
+
+def obtener_movimientos_inventario():
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM movimiento_inventario")
+    movimientos = cursor.fetchall()
+    conexion.close()
+    return movimientos
+
+def obtener_movimiento_inventario_por_id(movimiento_id):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM movimiento_inventario WHERE id = %s", (movimiento_id,))
+    movimiento = cursor.fetchone()
+    conexion.close()
+    return movimiento
+
+def actualizar_movimiento_inventario(movimiento_id, producto_id, tipo_movimiento, cantidad):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    cursor.execute("""
+        UPDATE movimiento_inventario
+        SET producto_id = %s, tipo_movimiento = %s, cantidad = %s
+        WHERE id = %s
+    """, (producto_id, tipo_movimiento, cantidad, movimiento_id))
+    conexion.commit()
+    conexion.close()
+
+def eliminar_movimiento_inventario(movimiento_id):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    cursor.execute("DELETE FROM movimiento_inventario WHERE id = %s", (movimiento_id,))
+    conexion.commit()
+    conexion.close()

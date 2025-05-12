@@ -65,3 +65,48 @@ def obtener_conexion():
         database=database
     )
 
+
+
+def crear_detalle_compra(compra_id, producto_id, cantidad, precio_unitario, total):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    cursor.execute("""
+        INSERT INTO detalle_compra_proveedor (compra_id, producto_id, cantidad, precio_unitario, total)
+        VALUES (%s, %s, %s, %s, %s)
+    """, (compra_id, producto_id, cantidad, precio_unitario, total))
+    conexion.commit()
+    conexion.close()
+
+def obtener_detalles_compra():
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM detalle_compra_proveedor")
+    detalles = cursor.fetchall()
+    conexion.close()
+    return detalles
+
+def obtener_detalle_compra_por_id(detalle_id):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM detalle_compra_proveedor WHERE id = %s", (detalle_id,))
+    detalle = cursor.fetchone()
+    conexion.close()
+    return detalle
+
+def actualizar_detalle_compra(detalle_id, compra_id, producto_id, cantidad, precio_unitario, total):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    cursor.execute("""
+        UPDATE detalle_compra_proveedor
+        SET compra_id = %s, producto_id = %s, cantidad = %s, precio_unitario = %s, total = %s
+        WHERE id = %s
+    """, (compra_id, producto_id, cantidad, precio_unitario, total, detalle_id))
+    conexion.commit()
+    conexion.close()
+
+def eliminar_detalle_compra(detalle_id):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    cursor.execute("DELETE FROM detalle_compra_proveedor WHERE id = %s", (detalle_id,))
+    conexion.commit()
+    conexion.close()
