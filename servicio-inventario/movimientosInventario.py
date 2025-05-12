@@ -1,4 +1,3 @@
-# categorias.py
 
 import mysql.connector
 import requests
@@ -11,8 +10,8 @@ def registrar_en_eureka(puerto):
     if not eureka_registered:
         eureka_client.init(
             eureka_server="http://localhost:8090/eureka",  
-            app_name="SERVICIO-PRODUCTO", 
-            instance_id=f"servicio-producto-{puerto}",  
+            app_name="SERVICIO-INVENTARIO", 
+            instance_id=f"servicio-inventario-{puerto}",  
             health_check_url=f"http://localhost:{puerto}/health",  
             home_page_url=f"http://localhost:{puerto}",  
             instance_port=puerto,  
@@ -22,7 +21,6 @@ def registrar_en_eureka(puerto):
     else:
         print("Eureka client ya está registrado.")
 
-# Cargar la configuración desde el servidor de configuración
 def cargar_configuracion(app_name, profile="default", config_server_url="http://localhost:7070"):
     url = f"{config_server_url}/{app_name}/{profile}"
     response = requests.get(url, auth=("root", "123456"))
@@ -42,7 +40,7 @@ def cargar_configuracion(app_name, profile="default", config_server_url="http://
         return {}
 
 def obtener_conexion():
-    config = cargar_configuracion("servicio-producto")
+    config = cargar_configuracion("servicio-inventario")
 
     db_url = config.get("spring.jpa.datasource.url", "")
 
@@ -66,6 +64,7 @@ def obtener_conexion():
         password=password,
         database=database
     )
+
 
 
 

@@ -15,7 +15,7 @@ spring:
     show_sql: true
     datasource:
       driverClassName: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/producto_db
+      url: jdbc:mysql://localhost:3306/proveedor_db
       username: root
       password:
 

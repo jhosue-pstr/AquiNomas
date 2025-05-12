@@ -1,4 +1,3 @@
-# categorias.py
 
 import mysql.connector
 import requests
@@ -65,6 +64,7 @@ def obtener_conexion():
         password=password,
         database=database
     )
+
 
 
 

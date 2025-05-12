@@ -44,9 +44,6 @@ def obtener_conexion():
 
     db_url = config.get("spring.jpa.datasource.url", "")
 
-    if not db_url.startswith("jdbc:mysql://"):
-        raise ValueError("La URL de la base de datos no está configurada correctamente.")
-    
     try:
         host = db_url.split("://")[1].split("/")[0].split(":")[0]
         port = db_url.split("://")[1].split("/")[0].split(":")[1]
