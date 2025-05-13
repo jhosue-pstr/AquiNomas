@@ -19,5 +19,5 @@ spring:
         - id: servicio-venta
           uri: lb://servicio-venta
           predicates:
-            - Path=/ventas/**, /ventadetalle/**
+            - Path=/ventas/**, /ventasdetalle/**
 
