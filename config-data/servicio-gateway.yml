@@ -27,5 +27,20 @@ spring:
             - Path=/compras/**
 
 
+        - id: servicio-producto
+          uri: lb://servicio-producto
+          predicates:
+            - Path=/categorias/**, /productos/**
+
+        - id: ms-cliente-service
+          uri: lb://ms-cliente-service
+          predicates:
+            - Path=/clientes/**
+
+        - id: servicio-pedido
+          uri: lb://servicio-pedido
+          predicates:
+            - Path=/pedido/**
+
 
 
