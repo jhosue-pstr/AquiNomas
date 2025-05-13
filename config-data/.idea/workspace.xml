@@ -4,37 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="681ba286-d33c-406b-aca0-a61ed1b0fdef" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/.gitattributes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/mvnw" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/mvnw.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/ServicioVentaApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/controller/VentaController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/controller/VentaDetalleController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/dto/Cliente.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/dto/Producto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/entity/Venta.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/entity/VentaDetalle.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/repository/VentaDetalleRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/repository/VentaRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/service/VentaDetalleService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/service/VentaService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/service/impl/ClienteService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/service/impl/ProductoService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/service/impl/VentaDetalleServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/service/impl/VentaServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/resources/application.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/test/java/com/example/servicioventa/ServicioVentaApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/servicio-venta.yml" beforeDir="false" afterPath="$PROJECT_DIR$/servicio-venta.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../servicio-venta/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-venta/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/ServicioVentaApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/ServicioVentaApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/entity/Venta.java" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/entity/Venta.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../servicio-venta/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-venta/src/main/resources/application.yml" afterDir="false" />
-    </list>
+    <list default="true" id="681ba286-d33c-406b-aca0-a61ed1b0fdef" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -86,7 +56,7 @@
       <workItem from="1746823544667" duration="5000" />
       <workItem from="1746895481162" duration="433000" />
       <workItem from="1746895967284" duration="1756000" />
-      <workItem from="1747167634330" duration="682000" />
+      <workItem from="1747167634330" duration="1012000" />
     </task>
     <servers />
   </component>
