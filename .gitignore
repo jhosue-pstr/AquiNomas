@@ -16,7 +16,7 @@ instance/
 *.db
 *.sqlite
 
-# Archivos de logs
+# Archivos de logsw
 *.log
 
 # Archivos de configuración del sistema operativo (si aplica)
