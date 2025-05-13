@@ -29,7 +29,7 @@ public class VentaDetalleController {
     public VentaDetalle crearDetalle(@RequestBody VentaDetalle ventaDetalle) {
         return ventaDetalleService.guardar(ventaDetalle);
     }
-
+0
     @PutMapping("/{id}")
     public VentaDetalle actualizarDetalle(@PathVariable Integer id, @RequestBody VentaDetalle ventaDetalle) {
         ventaDetalle.setId(id);  // Asignar el ID antes de actualizar
