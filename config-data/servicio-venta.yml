@@ -1,0 +1,73 @@
+#servicio-venta
+server:
+#  port: 8088
+  port: ${PORT:${SERVER_PORT:0}}
+
+spring:
+  application:
+    name: servicio-venta
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/jhosue-pstr/AquiNomas.git
+          searchPaths: config-data
+          default-label: nelson
+
+  # CONEXION A BASE DE DATOS
+  datasource:
+    url: jdbc:mysql://localhost:3306/mysqldb
+    username: root
+    password: ""
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+  # Configuración de Swagger/OpenAPI
+  springdoc:
+    api-docs:
+      enabled: true
+    swagger-ui:
+      enabled: true
+      path: /doc/swagger-ui.html  # Cambié esta ruta
+
+  security:
+    user:
+      name: root
+      password: 123456
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8090/eureka}
+  #      defaultZone: http://localhost:8090/eureka
+  instance:
+    hostname: localhost
+
+resilience4j.circuitbreaker:
+  instances:
+    EstudianteListarPorIdCB:
+      registerHealthIndicator: true
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 3
+      slidingWindowType: TIME_BASED
+      minimumNumberOfCalls: 4
+      waitDurationInOpenState: 5000
+      failureRateThreshold: 50
+      eventConsumerBufferSize: 10
+
+    CursoListarPorIdCB:
+      registerHealthIndicator: true
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 3
+      slidingWindowType: TIME_BASED
+      minimumNumberOfCalls: 4
+      waitDurationInOpenState: 5000
+      failureRateThreshold: 50
+      eventConsumerBufferSize: 10
