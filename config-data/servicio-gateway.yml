@@ -16,8 +16,8 @@ spring:
         locator:
           enable: true
       routes:
-        - id: servicio-proveedor
-          uri: lb://SERVICIO-PROVEEDOR
+        - id: servicio-venta
+          uri: lb://servicio-venta
           predicates:
-            - Path=/proveedores/**
+            - Path=/venta/**
 
