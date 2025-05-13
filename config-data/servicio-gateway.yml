@@ -15,9 +15,11 @@ spring:
       discovery:
         locator:
           enable: true
+
       routes:
         - id: servicio-venta
           uri: lb://servicio-venta
           predicates:
-            - Path=/ventas/**, /ventasdetalle/**
+            - Path=/ventas/**
+            - Path=/ventasdetalle/**
 
