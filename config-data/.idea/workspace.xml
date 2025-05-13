@@ -5,9 +5,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="681ba286-d33c-406b-aca0-a61ed1b0fdef" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/ServicioVentaApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/controller/VentaController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/controller/VentaDetalleController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/dto/Cliente.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/dto/Producto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/entity/Venta.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/entity/VentaDetalle.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/repository/VentaDetalleRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/repository/VentaRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/service/VentaDetalleService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/service/VentaService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/service/impl/ClienteService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/service/impl/ProductoService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/service/impl/VentaDetalleServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/java/com/example/servicioventa/service/impl/VentaServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/main/resources/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../aerlgiaena/src/test/java/com/example/servicioventa/ServicioVentaApplicationTests.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../servicio-gateway/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-gateway/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../servicio-gateway/src/main/java/com/example/serviciogateway/ServicioGatewayApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-gateway/src/main/java/com/example/serviciogateway/ServicioGatewayApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servicio-venta.yml" beforeDir="false" afterPath="$PROJECT_DIR$/servicio-venta.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../servicio-venta/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-venta/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/ServicioVentaApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/ServicioVentaApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/entity/Venta.java" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/entity/Venta.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../servicio-venta/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-venta/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,29 +51,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/jhosue/Programacion/AquiNomas/config-data&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "nelson",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/jhosue/Programacion/AquiNomas/config-data",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.25410.129" />
-        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-IU-251.25410.129" />
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
       </set>
     </attachedChunks>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="681ba286-d33c-406b-aca0-a61ed1b0fdef" name="Changes" comment="" />
@@ -58,6 +86,7 @@
       <workItem from="1746823544667" duration="5000" />
       <workItem from="1746895481162" duration="433000" />
       <workItem from="1746895967284" duration="1756000" />
+      <workItem from="1747167634330" duration="682000" />
     </task>
     <servers />
   </component>

@@ -1,12 +1,8 @@
 server:
-  #  port: 8087
+  #port: 8088
   port: ${PORT:${SERVER_PORT:0}}
 
 spring:
-  application:
-    name: servicio-venta
-
-  # CONEXION A BASE DE DATOS
   datasource:
     url: jdbc:mysql://localhost:3306/venta_db
     username: root
@@ -27,34 +23,26 @@ springdoc:
     enabled: true
   swagger-ui:
     enabled: true
-    path: /doc/swagger-ui.html  # Cambié esta ruta
+    path: /doc/swagger-ui.html
 
 eureka:
   client:
     serviceUrl:
+      #defaultZone: http://localhost:8090/eureka
       defaultZone: ${EUREKA_URI:http://localhost:8090/eureka}
-  #      defaultZone: http://localhost:8090/eureka
   instance:
-    hostname: localhost
+    #hostname: localhost
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 
-resilience4j.circuitbreaker:
-  instances:
-    EstudianteListarPorIdCB:
-      registerHealthIndicator: true
-      slidingWindowSize: 10
-      permittedNumberOfCallsInHalfOpenState: 3
-      slidingWindowType: TIME_BASED
-      minimumNumberOfCalls: 4
-      waitDurationInOpenState: 5000
-      failureRateThreshold: 50
-      eventConsumerBufferSize: 10
-
-    CursoListarPorIdCB:
-      registerHealthIndicator: true
-      slidingWindowSize: 10
-      permittedNumberOfCallsInHalfOpenState: 3
-      slidingWindowType: TIME_BASED
-      minimumNumberOfCalls: 4
-      waitDurationInOpenState: 5000
-      failureRateThreshold: 50
-      eventConsumerBufferSize: 10
+resilience4j:
+  circuitbreaker:
+    instances:
+      clienteFeign:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowType: TIME_BASED
+        minimumNumberOfCalls: 4
+        waitDurationInOpenState: 5s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
