@@ -23,20 +23,19 @@ public class CompraServiceImpl implements CompraService {
     @Override
     public Compra crearCompra(CompraDto compraDto) {
         Compra compra = new Compra();
-        compra.setCodigo(compraDto.getCodigo());
-        compra.setFecha(compraDto.getFecha());
+        compra.setFechaCompra(compraDto.getFechaCompra());
         compra.setTotal(compraDto.getTotal());
         compra.setProveedorId(compraDto.getProveedorId());
 
-        // Obtener el proveedor usando Feign Client
         try {
             compra.setProveedor(proveedorClient.getProveedorById(compraDto.getProveedorId()));
         } catch (Exception e) {
-            compra.setProveedor(null);  // En caso de que el proveedor no esté disponible
+            compra.setProveedor(null);
         }
 
         return compraRepository.save(compra);
     }
+
 
     @Override
     public List<Compra> obtenerTodasLasCompras() {
@@ -54,22 +53,21 @@ public class CompraServiceImpl implements CompraService {
         Optional<Compra> compraOptional = compraRepository.findById(id);
         if (compraOptional.isPresent()) {
             Compra compra = compraOptional.get();
-            compra.setCodigo(compraDto.getCodigo());
-            compra.setFecha(compraDto.getFecha());
+            compra.setFechaCompra(compraDto.getFechaCompra());
             compra.setTotal(compraDto.getTotal());
             compra.setProveedorId(compraDto.getProveedorId());
 
-            // Actualizar proveedor con Feign Client
             try {
                 compra.setProveedor(proveedorClient.getProveedorById(compraDto.getProveedorId()));
             } catch (Exception e) {
-                compra.setProveedor(null);  // En caso de que el proveedor no esté disponible
+                compra.setProveedor(null);
             }
 
             return compraRepository.save(compra);
         }
         return null;
     }
+
 
     @Override
     public void eliminarCompra(Integer id) {

@@ -2,13 +2,15 @@ package com.upeu.serviciocompra.dto;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @Data
 public class CompraDto {
 
-    private String codigo;
-    private LocalDateTime fecha;
-    private Double total;
-    private Integer proveedorId;  // Este es el ID del proveedor que se va a asociar
+    private Integer id; // opcional si quieres incluir el ID
+    private Integer proveedorId;
+    private BigDecimal total;
+    private Timestamp fechaCompra;
+
 }
