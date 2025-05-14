@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.3</version>
+		<version>3.2.5</version>
 		<relativePath/>
 	</parent>
 
@@ -20,10 +20,9 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<spring-cloud.version>2023.0.1</spring-cloud.version> <!-- Usa una versión compatible con Spring Boot 3.4.5 -->
+		<spring-cloud.version>2023.0.2</spring-cloud.version>
 	</properties>
 
-	<!-- Gestión de dependencias para Spring Cloud -->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -42,12 +41,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
-		<!-- spring-core agregado explícitamente -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-		</dependency>
-
 
 		<!-- Web y validaciones -->
 		<dependency>
@@ -128,6 +121,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.projectlombok</groupId>
