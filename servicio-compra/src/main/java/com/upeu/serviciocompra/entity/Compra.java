@@ -1,35 +1,30 @@
 package com.upeu.serviciocompra.entity;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.upeu.serviciocompra.dto.ProveedorDto;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "compra_cliente")
 @Data
 public class Compra {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer id;  // ID de la compra como Integer
 
-    @Column(name = "cliente_id", nullable = false)
-    private Integer clienteId;
+    private String codigo;
 
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal total;
+    private LocalDateTime fecha;
 
-    @Column(name = "fecha_compra", updatable = false)
-    @CreationTimestamp
-    private Timestamp fechaCompra;
+    private Double total;
 
-    public Compra() {}
+    private Integer proveedorId;  // ID de proveedor como Integer
 
-    public Compra(Integer clienteId, BigDecimal total) {
-        this.clienteId = clienteId;
-        this.total = total;
-    }
+    @Transient
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private ProveedorDto proveedor;  // Relaciona el DTO de proveedor
 }
+
