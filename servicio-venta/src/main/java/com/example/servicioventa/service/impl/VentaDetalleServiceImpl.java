@@ -1,16 +1,12 @@
 package com.example.servicioventa.service.impl;
 
-import com.example.servicioventa.dto.Producto;
-import com.example.servicioventa.entity.Venta;
-import com.example.servicioventa.entity.VentaDetalle;
+import com.example.servicioventa.entity.Detalle_Venta;
 import com.example.servicioventa.repository.VentaDetalleRepository;
 import com.example.servicioventa.service.VentaDetalleService;
-import com.example.servicioventa.service.VentaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,24 +17,24 @@ public class VentaDetalleServiceImpl implements VentaDetalleService {
     private VentaDetalleRepository ventaDetalleRepository;
 
     @Override
-    public List<VentaDetalle> listar() {
+    public List<Detalle_Venta> listar() {
         return ventaDetalleRepository.findAll();
     }
 
     @Override
-    public VentaDetalle guardar(VentaDetalle ventaDetalle) {
+    public Detalle_Venta guardar(Detalle_Venta detalleVenta) {
         // Calcular el total antes de guardar
-        ventaDetalle.setTotal(ventaDetalle.getPrecio_unitario().multiply(new BigDecimal(ventaDetalle.getCantidad())));
-        return ventaDetalleRepository.save(ventaDetalle);
+        detalleVenta.setTotal(detalleVenta.getPrecio_unitario().multiply(new BigDecimal(detalleVenta.getCantidad())));
+        return ventaDetalleRepository.save(detalleVenta);
     }
 
     @Override
-    public VentaDetalle actualizar(VentaDetalle ventaDetalle) {
-        return ventaDetalleRepository.save(ventaDetalle);
+    public Detalle_Venta actualizar(Detalle_Venta detalleVenta) {
+        return ventaDetalleRepository.save(detalleVenta);
     }
 
     @Override
-    public Optional<VentaDetalle> listarPorId(Integer id) {
+    public Optional<Detalle_Venta> listarPorId(Integer id) {
         return ventaDetalleRepository.findById(id);
     }
 

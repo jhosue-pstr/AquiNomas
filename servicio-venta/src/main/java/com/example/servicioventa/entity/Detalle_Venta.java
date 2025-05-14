@@ -6,10 +6,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Entity
-public class VentaDetalle {
+public class Detalle_Venta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -67,7 +66,7 @@ public class VentaDetalle {
         this.total = total;
     }
 
-    public VentaDetalle() {
+    public Detalle_Venta() {
     }
 
     @Override
@@ -82,7 +81,7 @@ public class VentaDetalle {
                 '}';
     }
 
-    public VentaDetalle(Integer id, Integer venta_id, Integer producto_id, Integer cantidad, BigDecimal precio_unitario, BigDecimal total) {
+    public Detalle_Venta(Integer id, Integer venta_id, Integer producto_id, Integer cantidad, BigDecimal precio_unitario, BigDecimal total) {
         this.id = id;
         this.venta_id = venta_id;
         this.producto_id = producto_id;

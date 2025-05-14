@@ -1,6 +1,6 @@
 package com.example.servicioventa.controller;
 
-import com.example.servicioventa.entity.VentaDetalle;
+import com.example.servicioventa.entity.Detalle_Venta;
 import com.example.servicioventa.service.VentaDetalleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,24 +16,24 @@ public class VentaDetalleController {
     private VentaDetalleService ventaDetalleService;
 
     @GetMapping
-    public List<VentaDetalle> listarDetalles() {
+    public List<Detalle_Venta> listarDetalles() {
         return ventaDetalleService.listar();
     }
 
     @GetMapping("/{id}")
-    public Optional<VentaDetalle> obtenerDetallePorId(@PathVariable Integer id) {
+    public Optional<Detalle_Venta> obtenerDetallePorId(@PathVariable Integer id) {
         return ventaDetalleService.listarPorId(id);
     }
 
     @PostMapping
-    public VentaDetalle crearDetalle(@RequestBody VentaDetalle ventaDetalle) {
-        return ventaDetalleService.guardar(ventaDetalle);
+    public Detalle_Venta crearDetalle(@RequestBody Detalle_Venta detalleVenta) {
+        return ventaDetalleService.guardar(detalleVenta);
     }
 
     @PutMapping("/{id}")
-    public VentaDetalle actualizarDetalle(@PathVariable Integer id, @RequestBody VentaDetalle ventaDetalle) {
-        ventaDetalle.setId(id);  // Asignar el ID antes de actualizar
-        return ventaDetalleService.actualizar(ventaDetalle);
+    public Detalle_Venta actualizarDetalle(@PathVariable Integer id, @RequestBody Detalle_Venta detalleVenta) {
+        detalleVenta.setId(id);  // Asignar el ID antes de actualizar
+        return ventaDetalleService.actualizar(detalleVenta);
     }
 
     @DeleteMapping("/{id}")

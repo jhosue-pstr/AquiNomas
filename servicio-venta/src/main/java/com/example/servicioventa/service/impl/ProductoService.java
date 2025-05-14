@@ -7,7 +7,11 @@ import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductoService {
@@ -36,5 +40,27 @@ public class ProductoService {
 
     public Optional<Object> listarPorId(Integer productoId) {
         return null;
+    }
+
+    public List<Integer> getAllProductoIds() {
+        ServiceInstance instance = loadBalancerClient.choose("servicio-producto");
+        if (instance != null) {
+            String baseUrl = instance.getUri().toString();
+            String url = baseUrl + "/productos";  // Asegúrate de que exista este endpoint
+
+            try {
+                Producto[] productos = restTemplate.getForObject(url, Producto[].class);
+                if (productos != null) {
+                    return Arrays.stream(productos)
+                            .map(Producto::getId)
+                            .collect(Collectors.toList());
+                } else {
+                    return Collections.emptyList();
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("Error al obtener productos: " + e.getMessage());
+            }
+        }
+        throw new RuntimeException("No hay instancias de servicio-producto en Eureka.");
     }
 }
