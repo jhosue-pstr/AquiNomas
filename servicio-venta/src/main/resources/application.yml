@@ -1,8 +1,7 @@
- #spring.application.name=servicio-gateway
-
+#spring.application.name=servicio-venta
 spring:
   application:
-    name: servicio-gateway
+    name: servicio-venta
   profiles:
     active: development
   config:
