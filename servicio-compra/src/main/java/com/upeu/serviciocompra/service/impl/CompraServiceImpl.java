@@ -39,14 +39,31 @@ public class CompraServiceImpl implements CompraService {
 
     @Override
     public List<Compra> obtenerTodasLasCompras() {
-        return compraRepository.findAll();
+        List<Compra> compras = compraRepository.findAll();
+        for (Compra compra : compras) {
+            try {
+                compra.setProveedor(proveedorClient.getProveedorById(compra.getProveedorId()));
+            } catch (Exception e) {
+                compra.setProveedor(null); // o puedes usar ProveedorFallback manual
+            }
+        }
+        return compras;
     }
+
 
     @Override
     public Compra obtenerCompraPorId(Integer id) {
         Optional<Compra> compra = compraRepository.findById(id);
+        if (compra.isPresent()) {
+            try {
+                compra.get().setProveedor(proveedorClient.getProveedorById(compra.get().getProveedorId()));
+            } catch (Exception e) {
+                compra.get().setProveedor(null);
+            }
+        }
         return compra.orElse(null);
     }
+
 
     @Override
     public Compra actualizarCompra(Integer id, CompraDto compraDto) {
