@@ -1,39 +1,42 @@
 package com.upeu.serviciocompra.controller;
 
-import com.upeu.serviciocompra.dto.CompraDTO;
+import com.upeu.serviciocompra.dto.CompraDto;
 import com.upeu.serviciocompra.entity.Compra;
 import com.upeu.serviciocompra.service.CompraService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/compras")
-@RequiredArgsConstructor
 public class CompraController {
 
-    private final CompraService compraService;
+    @Autowired
+    private CompraService compraService;
+
+    @PostMapping
+    public Compra crearCompra(@RequestBody CompraDto compraDto) {
+        return compraService.crearCompra(compraDto);
+    }
 
     @GetMapping
-    public ResponseEntity<List<CompraDTO>> listarCompras() {
-        return ResponseEntity.ok(compraService.listar());
+    public List<Compra> obtenerTodasLasCompras() {
+        return compraService.obtenerTodasLasCompras();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CompraDTO> obtenerCompra(@PathVariable Integer id) {
-        return ResponseEntity.ok(compraService.obtenerPorId(id));
+    public Compra obtenerCompraPorId(@PathVariable Integer id) {
+        return compraService.obtenerCompraPorId(id);
     }
 
-    @PostMapping
-    public ResponseEntity<CompraDTO> crearCompra(@RequestBody Compra compra) {
-        return ResponseEntity.ok(compraService.guardar(compra));
+    @PutMapping("/{id}")
+    public Compra actualizarCompra(@PathVariable Integer id, @RequestBody CompraDto compraDto) {
+        return compraService.actualizarCompra(id, compraDto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarCompra(@PathVariable Integer id) {
-        compraService.eliminar(id);
-        return ResponseEntity.noContent().build();
+    public void eliminarCompra(@PathVariable Integer id) {
+        compraService.eliminarCompra(id);
     }
 }

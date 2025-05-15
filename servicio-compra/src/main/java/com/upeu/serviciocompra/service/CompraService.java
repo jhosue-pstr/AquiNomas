@@ -1,13 +1,19 @@
 package com.upeu.serviciocompra.service;
 
-import com.upeu.serviciocompra.dto.CompraDTO;
+import com.upeu.serviciocompra.dto.CompraDto;
 import com.upeu.serviciocompra.entity.Compra;
 
 import java.util.List;
 
 public interface CompraService {
-    List<CompraDTO> listar();
-    CompraDTO obtenerPorId(Integer id);
-    CompraDTO guardar(Compra compra);
-    void eliminar(Integer id);
+
+    Compra crearCompra(CompraDto compraDto);
+
+    List<Compra> obtenerTodasLasCompras();
+
+    Compra obtenerCompraPorId(Integer id);
+
+    Compra actualizarCompra(Integer id, CompraDto compraDto);
+
+    void eliminarCompra(Integer id);
 }

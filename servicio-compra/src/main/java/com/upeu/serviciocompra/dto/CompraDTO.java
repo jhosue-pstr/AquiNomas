@@ -1,16 +1,16 @@
 package com.upeu.serviciocompra.dto;
 
-import lombok.*;
+import lombok.Data;
+
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class CompraDTO {
-    private Integer id;
-    private Integer clienteId;
+public class CompraDto {
+
+    private Integer id; // opcional si quieres incluir el ID
+    private Integer proveedorId;
     private BigDecimal total;
-    private String fechaCompra;
-    private ClienteDTO cliente;
+    private Timestamp fechaCompra;
+
 }
