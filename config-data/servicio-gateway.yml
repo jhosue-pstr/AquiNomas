@@ -4,15 +4,14 @@ server:
 eureka:
   client:
     serviceUrl:
-    #defaultZone: http://localhost:8090/eureka
+      #defaultZone: http://localhost:8090/eureka
       defaultZone: ${EUREKA_URI:http://localhost:8090/eureka}
   instance:
-  #hostname: localhost
+    #hostname: localhost
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 spring:
   cloud:
     gateway:
-
       discovery:
         locator:
           enable: true
@@ -26,6 +25,17 @@ spring:
           predicates:
             - Path=/compras/**
 
+        - id: servicio-producto
+          uri: lb://servicio-producto
+          predicates:
+            - Path=/categorias/**, /productos/**
 
+        - id: servicio-pedido
+          uri: lb://servicio-pedido
+          predicates:
+            - Path=/pedido/**
 
-
+        - id: servicio-venta
+          uri: lb://servicio-venta
+          predicates:
+            - Path=/ventas/**, /ventasdetalle/**

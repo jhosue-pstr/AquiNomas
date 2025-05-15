@@ -1,8 +1,6 @@
- #spring.application.name=servicio-gateway
-
 spring:
   application:
-    name: servicio-gateway
+    name: servicio-producto
   profiles:
     active: development
   config:
