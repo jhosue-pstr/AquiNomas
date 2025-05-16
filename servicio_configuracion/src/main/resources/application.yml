@@ -10,8 +10,7 @@ spring:
         git:
           uri: https://github.com/jhosue-pstr/AquiNomas.git
           searchPaths: config-data
-          default-label: pastor
-
+          default-label: main
   security:
     user:
       name: root
