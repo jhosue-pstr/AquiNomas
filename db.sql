@@ -136,7 +136,7 @@ CREATE TABLE compra_proveedor (
     proveedor_id INT,
     total DECIMAL(10, 2),
     fecha_compra TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (proveedor_id) REFERENCES proveedor(id)
+    FOREIGN KEY (proveedor_id) REFERENCES proveedor(id)c
 );
 
 CREATE TABLE detalle_compra_proveedor (
@@ -193,7 +193,7 @@ CREATE TABLE ajuste_inventario (
     producto_id INT,
     cantidad INT,
     motivo VARCHAR(255),
-    tipo_ajuste VARCHAR(50);
+    tipo_ajuste VARCHAR(50),
     fecha_ajuste TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (producto_id) REFERENCES producto_db.producto(id)
 );
@@ -202,6 +202,7 @@ CREATE TABLE inventario (
     id INT AUTO_INCREMENT PRIMARY KEY,
     producto_id INT UNIQUE,
     cantidad_disponible INT,
+    stock_minimo INT DEFAULT 0,
     fecha_vencimiento DATE,
     FOREIGN KEY (producto_id) REFERENCES producto_db.producto(id)
 );

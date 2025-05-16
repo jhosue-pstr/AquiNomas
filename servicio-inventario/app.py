@@ -64,6 +64,18 @@ def fallback_inventario(producto_id):
         "producto_id": producto_id,
         "mensaje": "Servicio no disponible - fallback activado"
     }), 200
+
+
+
+
+@app.route('/alertas_stock', methods=['GET'])
+def alertas_stock_bajo():
+    alertas = inventario.obtener_alertas_stock_bajo()
+    return jsonify(alertas)
+
+
+
+
 #================ajustes de inventario=====================+#
 @app.route('/ajustes_inventario', methods=['POST'])
 def crear_ajuste_inventario():

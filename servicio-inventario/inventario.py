@@ -67,6 +67,65 @@ def obtener_conexion():
 
 
 
+
+import requests
+import xml.etree.ElementTree as ET
+
+URL_SERVICIO_PRODUCTO = None
+
+def obtener_url_servicio_producto():
+    global URL_SERVICIO_PRODUCTO
+    try:
+        response = requests.get("http://localhost:8090/eureka/apps/SERVICIO-PRODUCTO")
+        if response.status_code == 200:
+            root = ET.fromstring(response.content)
+            instance = root.find('instance')
+            if instance is not None:
+                host = instance.find('hostName').text
+                port = instance.find('port').text
+                URL_SERVICIO_PRODUCTO = f"http://{host}:{port}"
+                print(f"URL servicio-producto actualizada: {URL_SERVICIO_PRODUCTO}")
+                return URL_SERVICIO_PRODUCTO
+            else:
+                print("No se encontró la instancia en la respuesta de Eureka.")
+                URL_SERVICIO_PRODUCTO = None
+                return None
+        else:
+            print(f"Error al consultar Eureka: status {response.status_code}")
+            URL_SERVICIO_PRODUCTO = None
+            return None
+    except Exception as e:
+        print(f"Error al obtener URL del servicio producto: {e}")
+        URL_SERVICIO_PRODUCTO = None
+        return None
+
+# Inicializar al cargar módulo
+obtener_url_servicio_producto()
+
+def obtener_producto_por_id(producto_id):
+    global URL_SERVICIO_PRODUCTO
+    if not URL_SERVICIO_PRODUCTO:
+        # Intenta actualizar URL
+        if not obtener_url_servicio_producto():
+            return {"error": "No se pudo resolver la URL del servicio-producto"}
+
+    try:
+        response = requests.get(f"{URL_SERVICIO_PRODUCTO}/productos/{producto_id}")
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return {"error": "Producto no encontrado"}
+    except Exception as e:
+        print(f"Error al contactar con servicio-producto: {str(e)}")
+        # Intentamos refrescar URL para próxima llamada
+        obtener_url_servicio_producto()
+        return {"error": "Error al contactar con servicio-producto"}
+
+
+
+
+
+
 def crear_inventario(producto_id, cantidad_disponible, fecha_vencimiento):
     conexion = obtener_conexion()
     cursor = conexion.cursor()
@@ -77,13 +136,20 @@ def crear_inventario(producto_id, cantidad_disponible, fecha_vencimiento):
     conexion.commit()
     conexion.close()
 
+
 def obtener_inventarios():
     conexion = obtener_conexion()
     cursor = conexion.cursor(dictionary=True)
     cursor.execute("SELECT * FROM inventario")
     inventarios = cursor.fetchall()
     conexion.close()
+    
+    for inv in inventarios:
+        producto = obtener_producto_por_id(inv["producto_id"])
+        inv["producto"] = producto
+
     return inventarios
+
 
 def obtener_inventario_por_producto(producto_id):
     conexion = obtener_conexion()
@@ -110,3 +176,24 @@ def eliminar_inventario(producto_id):
     cursor.execute("DELETE FROM inventario WHERE producto_id = %s", (producto_id,))
     conexion.commit()
     conexion.close()
+
+
+
+
+def obtener_alertas_stock_bajo():
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("""
+        SELECT * FROM inventario 
+        WHERE cantidad_disponible < stock_minimo
+    """)
+    alertas = cursor.fetchall()
+    conexion.close()
+
+    for alerta in alertas:
+        producto = obtener_producto_por_id(alerta["producto_id"])
+        alerta["producto"] = producto
+        alerta["alerta"] = "Stock bajo - Comprar"
+
+    return alertas
+
