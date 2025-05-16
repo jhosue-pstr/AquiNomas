@@ -1,0 +1,32 @@
+server:
+  port: 9000
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8090/eureka}
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enable: true
+      routes:
+        #========servicio proveedor========#
+        - id: servicio-proveedor
+          uri: lb://servicio-proveedor
+          predicates:
+            - Path=/proveedores/**
+            - Path=/productos-proveedores/**
+            - Path=/compras-proveedores/**
+            - Path=/detalle_compras/**
+
+        #=========servicio inventario=======#
+        - id: servicio-inventario
+          uri: lb://servicio-inventario
+          predicates:
+            - Path=/inventario/**
+            - Path=/ajustes_inventario/**
+            - Path=/movimientos_inventario/**
