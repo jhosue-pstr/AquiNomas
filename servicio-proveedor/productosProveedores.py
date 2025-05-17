@@ -44,14 +44,13 @@ def obtener_conexion():
         raise ValueError("La URL de la base de datos no está configurada correctamente.")
     
     try:
-        # Extraer host, puerto y base de datos desde la URL jdbc:mysql://host:port/dbname
         host_port = db_url.split("://")[1].split("/")[0]
         if ":" in host_port:
             host, port = host_port.split(":")
             port = int(port)
         else:
             host = host_port
-            port = 3306  # puerto por defecto mysql si no especificado
+            port = 3306
         database = db_url.split("/")[-1]
     except IndexError:
         raise ValueError("Error al analizar la URL de la base de datos.")
@@ -68,6 +67,67 @@ def obtener_conexion():
     )
 
 
+
+
+
+import requests
+import xml.etree.ElementTree as ET
+
+URL_SERVICIO_PRODUCTO = None
+
+def obtener_url_servicio_producto():
+    global URL_SERVICIO_PRODUCTO
+    try:
+        response = requests.get("http://localhost:8090/eureka/apps/SERVICIO-PRODUCTO")
+        if response.status_code == 200:
+            root = ET.fromstring(response.content)
+            instance = root.find('instance')
+            if instance is not None:
+                host = instance.find('hostName').text
+                port = instance.find('port').text
+                URL_SERVICIO_PRODUCTO = f"http://{host}:{port}"
+                print(f"URL servicio-producto actualizada: {URL_SERVICIO_PRODUCTO}")
+                return URL_SERVICIO_PRODUCTO
+            else:
+                print("No se encontró la instancia en la respuesta de Eureka.")
+                URL_SERVICIO_PRODUCTO = None
+                return None
+        else:
+            print(f"Error al consultar Eureka: status {response.status_code}")
+            URL_SERVICIO_PRODUCTO = None
+            return None
+    except Exception as e:
+        print(f"Error al obtener URL del servicio producto: {e}")
+        URL_SERVICIO_PRODUCTO = None
+        return None
+
+# Inicializar al cargar módulo
+obtener_url_servicio_producto()
+
+def obtener_producto_por_id(producto_id):
+    global URL_SERVICIO_PRODUCTO
+    if not URL_SERVICIO_PRODUCTO:
+        if not obtener_url_servicio_producto():
+            return {"error": "No se pudo resolver la URL del servicio-producto"}
+
+    try:
+        response = requests.get(f"{URL_SERVICIO_PRODUCTO}/productos/{producto_id}")
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return {"error": "Producto no encontrado"}
+    except Exception as e:
+        print(f"Error al contactar con servicio-producto: {str(e)}")
+        obtener_url_servicio_producto()
+        return {"error": "Error al contactar con servicio-producto"}
+
+
+
+
+
+
+
+
 def crear_producto_proveedor(proveedor_id, producto_id):
     conexion = obtener_conexion()
     cursor = conexion.cursor()
@@ -82,18 +142,36 @@ def obtener_productos_proveedor():
     cursor = conexion.cursor(dictionary=True)
     cursor.execute("SELECT * FROM producto_proveedor")
     relaciones = cursor.fetchall()
+
+    for rel in relaciones:
+        producto = obtener_producto_por_id(rel["producto_id"])
+        rel["producto"] = producto
+
+        cursor.execute("SELECT * FROM proveedor WHERE id = %s", (rel["proveedor_id"],))
+        proveedor = cursor.fetchone()
+        rel["proveedor"] = proveedor
+
     conexion.close()
     return relaciones
 
-
-def obtener_relacion_por_id(proveedor_id, producto_id):
+def obtener_relaciones_por_proveedor_id(proveedor_id):
     conexion = obtener_conexion()
     cursor = conexion.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM producto_proveedor WHERE proveedor_id = %s AND producto_id = %s",
-                   (proveedor_id, producto_id))
-    relacion = cursor.fetchone()
+    cursor.execute("SELECT * FROM producto_proveedor WHERE proveedor_id = %s", (proveedor_id,))
+    relaciones = cursor.fetchall()
+
+    for rel in relaciones:
+        # Obtener datos del producto desde el servicio externo
+        producto = obtener_producto_por_id(rel["producto_id"])
+        rel["producto"] = producto
+
+        # Obtener datos del proveedor desde la misma base de datos
+        cursor.execute("SELECT * FROM proveedor WHERE id = %s", (rel["proveedor_id"],))
+        proveedor = cursor.fetchone()
+        rel["proveedor"] = proveedor
+
     conexion.close()
-    return relacion
+    return relaciones
 
 
 def actualizar_producto_proveedor(proveedor_id_actual, producto_id_actual, nuevo_proveedor_id, nuevo_producto_id):

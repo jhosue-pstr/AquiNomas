@@ -108,13 +108,11 @@ def obtener_url_servicio_producto():
         URL_SERVICIO_PRODUCTO = None
         return None
 
-# Inicializar al cargar módulo
 obtener_url_servicio_producto()
 
 def obtener_producto_por_id(producto_id):
     global URL_SERVICIO_PRODUCTO
     if not URL_SERVICIO_PRODUCTO:
-        # Intenta actualizar URL
         if not obtener_url_servicio_producto():
             return {"error": "No se pudo resolver la URL del servicio-producto"}
 
@@ -126,7 +124,6 @@ def obtener_producto_por_id(producto_id):
             return {"error": "Producto no encontrado"}
     except Exception as e:
         print(f"Error al contactar con servicio-producto: {str(e)}")
-        # Intentamos refrescar URL para próxima llamada
         obtener_url_servicio_producto()
         return {"error": "Error al contactar con servicio-producto"}
 

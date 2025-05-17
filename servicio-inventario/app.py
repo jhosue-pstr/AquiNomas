@@ -21,50 +21,50 @@ def health():
 #=============RUTAS-==================#
 #================inventario=====================+#
 
+
 @app.route('/inventario', methods=['POST'])
-def crear_inventario():
+def crear_inventario_route():
     data = request.json
     inventario.crear_inventario(data['producto_id'], data['cantidad_disponible'], data['fecha_vencimiento'])
     return jsonify({"mensaje": "Inventario creado exitosamente"}), 201
 
 @app.route('/inventario', methods=['GET'])
-def listar_inventarios():
+def listar_inventarios_route():
     lista = inventario.obtener_inventarios()
     return jsonify(lista)
 
-@app.route('/inventario/<int:producto_id>', methods=['GET'])
-def obtener_inventario(producto_id):
-    try:
-        return jsonify(call_with_resilience_inventario(producto_id))
-    except Exception:
-        return fallback_inventario(producto_id)
-
-@app.route('/inventario/<int:producto_id>', methods=['PUT'])
-def actualizar_inventario(producto_id):
+@app.route('/inventario/<int:inventario_id>', methods=['PUT'])
+def actualizar_inventario_route(inventario_id):
     data = request.json
-    inventario.actualizar_inventario(producto_id, data['cantidad_disponible'], data['fecha_vencimiento'])
+    inventario.actualizar_inventario_por_id(inventario_id, data['cantidad_disponible'], data['fecha_vencimiento'])
     return jsonify({"mensaje": "Inventario actualizado correctamente"})
 
-@app.route('/inventario/<int:producto_id>', methods=['DELETE'])
-def eliminar_inventario(producto_id):
-    inventario.eliminar_inventario(producto_id)
+@app.route('/inventario/<int:inventario_id>', methods=['DELETE'])
+def eliminar_inventario_route(inventario_id):
+    inventario.eliminar_inventario_por_id(inventario_id)
     return jsonify({"mensaje": "Inventario eliminado correctamente"})
+
+@app.route('/inventario/<int:inventario_id>', methods=['GET'])
+def obtener_inventario_id_route(inventario_id):
+    try:
+        return jsonify(call_with_resilience_inventario(inventario_id))
+    except Exception:
+        return fallback_inventario(inventario_id)
 
 
 @retry(stop=stop_after_attempt(2), wait=wait_fixed(1))
 @breaker
-def call_with_resilience_inventario(producto_id):
-    inventario = inventario.obtener_inventario_por_producto(producto_id)
-    if inventario:
-        return inventario
-    raise Exception("Inventario no encontrado")  
+def call_with_resilience_inventario(inventario_id):
+    invent = inventario.obtener_inventario_por_id(inventario_id)
+    if invent:
+        return invent
+    raise Exception("Inventario no encontrado")
 
-def fallback_inventario(producto_id):
+def fallback_inventario(inventario_id):
     return jsonify({
-        "producto_id": producto_id,
+        "id": inventario_id,
         "mensaje": "Servicio no disponible - fallback activado"
     }), 200
-
 
 
 

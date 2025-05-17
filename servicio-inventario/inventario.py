@@ -117,10 +117,8 @@ def obtener_producto_por_id(producto_id):
             return {"error": "Producto no encontrado"}
     except Exception as e:
         print(f"Error al contactar con servicio-producto: {str(e)}")
-        # Intentamos refrescar URL para próxima llamada
         obtener_url_servicio_producto()
         return {"error": "Error al contactar con servicio-producto"}
-
 
 
 
@@ -136,7 +134,6 @@ def crear_inventario(producto_id, cantidad_disponible, fecha_vencimiento):
     conexion.commit()
     conexion.close()
 
-
 def obtener_inventarios():
     conexion = obtener_conexion()
     cursor = conexion.cursor(dictionary=True)
@@ -145,35 +142,40 @@ def obtener_inventarios():
     conexion.close()
     
     for inv in inventarios:
-        producto = obtener_producto_por_id(inv["producto_id"])
+        producto = obtener_producto_por_id(inv["producto_id"])  # Llama a servicio-producto
         inv["producto"] = producto
 
     return inventarios
 
-
-def obtener_inventario_por_producto(producto_id):
+def obtener_inventario_por_id(inventario_id):
     conexion = obtener_conexion()
     cursor = conexion.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM inventario WHERE producto_id = %s", (producto_id,))
+    cursor.execute("SELECT * FROM inventario WHERE id = %s", (inventario_id,))
     inventario = cursor.fetchone()
     conexion.close()
+
+    if inventario:
+        producto = obtener_producto_por_id(inventario["producto_id"])  # Llama a servicio-producto
+        inventario["producto"] = producto
+
     return inventario
 
-def actualizar_inventario(producto_id, cantidad_disponible, fecha_vencimiento):
+
+def actualizar_inventario_por_id(inventario_id, cantidad_disponible, fecha_vencimiento):
     conexion = obtener_conexion()
     cursor = conexion.cursor()
     cursor.execute("""
         UPDATE inventario
         SET cantidad_disponible = %s, fecha_vencimiento = %s
-        WHERE producto_id = %s
-    """, (cantidad_disponible, fecha_vencimiento, producto_id))
+        WHERE id = %s
+    """, (cantidad_disponible, fecha_vencimiento, inventario_id))
     conexion.commit()
     conexion.close()
 
-def eliminar_inventario(producto_id):
+def eliminar_inventario_por_id(inventario_id):
     conexion = obtener_conexion()
     cursor = conexion.cursor()
-    cursor.execute("DELETE FROM inventario WHERE producto_id = %s", (producto_id,))
+    cursor.execute("DELETE FROM inventario WHERE id = %s", (inventario_id,))
     conexion.commit()
     conexion.close()
 

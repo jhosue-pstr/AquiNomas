@@ -7,7 +7,7 @@ import pybreaker
 import os
 import random
 from tenacity import retry, stop_after_attempt, wait_fixed
-
+from decimal import Decimal, ROUND_HALF_UP
 
 app = Flask(__name__)
 PORT = int(os.environ.get("PORT", random.randint(5001, 5999)))
@@ -24,30 +24,30 @@ def health():
 #===============RUTAS====================#
 #==========Proveedores===================#
 @app.route('/proveedores', methods=['POST'])
-def crear():
+def crear_proveedor():
     data = request.json
     proveedores.crear_proveedor(data['nombre'], data['telefono'], data['direccion'], data['email'])
     return jsonify({"mensaje": "Proveedor creado exitosamente"}), 201
 
 @app.route('/proveedores', methods=['GET'])
-def listar():
+def listar_proveedor():
     lista = proveedores.obtener_proveedores()
     return jsonify(lista)
 
 @app.route('/proveedores/<int:proveedor_id>', methods=['PUT'])
-def actualizar(proveedor_id):
+def actualizar_proveedor(proveedor_id):
     data = request.json
     proveedores.actualizar_proveedor(proveedor_id, data['nombre'], data['telefono'], data['direccion'], data['email'])
     return jsonify({"mensaje": "Proveedor actualizado correctamente"})
 
 @app.route('/proveedores/<int:proveedor_id>', methods=['DELETE'])
-def eliminar(proveedor_id):
+def eliminar_proveedor(proveedor_id):
     proveedores.eliminar_proveedor(proveedor_id)
     return jsonify({"mensaje": "Proveedor eliminado correctamente"})
 
 
 @app.route('/proveedores/<int:proveedor_id>', methods=['GET'])
-def obtener(proveedor_id):
+def obtener_proveedor_id(proveedor_id):
     try:
         return jsonify(call_with_resilience(proveedor_id))
     except Exception:
@@ -66,6 +66,32 @@ def fallback_proveedor(proveedor_id):
         "nombre": "Desconocido",
         "mensaje": "Servicio no disponible - fallback activado"
     }), 200
+
+#============================= productos proveedorer====================#
+
+@app.route('/productos-proveedores', methods=['POST'])
+def crear_productos_proveedor():
+    data = request.json
+    productosProveedores.crear_producto_proveedor(data['proveedor_id'], data['producto_id'])
+    return jsonify({"mensaje": "Relación producto-proveedor creada exitosamente"}), 201
+
+@app.route('/productos-proveedores', methods=['GET'])
+def listar_productos_proveedor():
+    lista = productosProveedores.obtener_productos_proveedor()
+    return jsonify(lista)
+
+@app.route('/productos-proveedores/<int:proveedor_id>/<int:producto_id>', methods=['DELETE'])
+def eliminar_productos_proveedor(proveedor_id, producto_id):
+    productosProveedores.eliminar_producto_proveedor(proveedor_id, producto_id)
+    return jsonify({"mensaje": "Relación producto-proveedor eliminada correctamente"})
+
+@app.route('/productos-proveedores/proveedor/<int:proveedor_id>', methods=['GET'])
+def obtener_relaciones_por_proveedor(proveedor_id):
+    try:
+        relaciones = obtener_relaciones_por_proveedor_id(proveedor_id)
+        return jsonify(relaciones)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 #======================= compras Proveedores =============+++#
 @app.route('/compras-proveedores', methods=['POST'])
@@ -114,8 +140,14 @@ def fallback_compra(compra_id):
 @app.route('/detalle_compras', methods=['POST'])
 def crear_detalle_compra():
     data = request.json
-    detalleComprasProveedores.crear_detalle_compra(data['compra_id'], data['producto_id'], data['cantidad'], data['precio_unitario'], data['total'])
-    return jsonify({"mensaje": "Detalle de compra creado exitosamente"}), 201
+    compra_id = data['compra_id']
+    producto_id = data['producto_id']
+    cantidad = data['cantidad']
+    try:
+        detalleComprasProveedores.crear_detalle_compra(compra_id, producto_id, cantidad)
+        return jsonify({"mensaje": "Detalle de compra creado exitosamente"}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
 @app.route('/detalle_compras', methods=['GET'])
 def listar_detalles_compras():

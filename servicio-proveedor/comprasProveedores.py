@@ -82,16 +82,27 @@ def obtener_compras_proveedor():
     cursor = conexion.cursor(dictionary=True)
     cursor.execute("SELECT * FROM compra_proveedor")
     compras = cursor.fetchall()
+    for compra in compras:
+        cursor.execute("SELECT * FROM proveedor WHERE id = %s", (compra['proveedor_id'],))
+        proveedor = cursor.fetchone()
+        compra['proveedor'] = proveedor
+
     conexion.close()
     return compras
+
 
 def obtener_compra_proveedor_por_id(compra_id):
     conexion = obtener_conexion()
     cursor = conexion.cursor(dictionary=True)
     cursor.execute("SELECT * FROM compra_proveedor WHERE id = %s", (compra_id,))
     compra = cursor.fetchone()
+    if compra:
+        cursor.execute("SELECT * FROM proveedor WHERE id = %s", (compra['proveedor_id'],))
+        proveedor = cursor.fetchone()
+        compra['proveedor'] = proveedor
     conexion.close()
     return compra
+
 
 def actualizar_compra_proveedor(compra_id, proveedor_id, total):
     conexion = obtener_conexion()

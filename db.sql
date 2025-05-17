@@ -136,7 +136,7 @@ CREATE TABLE compra_proveedor (
     proveedor_id INT,
     total DECIMAL(10, 2),
     fecha_compra TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (proveedor_id) REFERENCES proveedor(id)c
+    FOREIGN KEY (proveedor_id) REFERENCES proveedor(id)
 );
 
 CREATE TABLE detalle_compra_proveedor (
