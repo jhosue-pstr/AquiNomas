@@ -43,8 +43,7 @@ public class ProductoServiceImpl implements ProductoService {
         productoDB.setCategoria(producto.getCategoria());
         productoDB.setDescripcion(producto.getDescripcion());
         productoDB.setPrecio(producto.getPrecio());
-        productoDB.setStock(producto.getStock());
-        productoDB.setStockMinimo(producto.getStockMinimo()); // ✅ nuevo campo añadido
+
 
         return productoRepository.save(productoDB);
     }

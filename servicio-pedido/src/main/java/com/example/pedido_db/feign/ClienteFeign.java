@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.math.BigDecimal;
 
-@FeignClient(name = "pedido-db-service", path = "/clientes")
+@FeignClient(name = "servicio-cliente", path = "/clientes")
 public interface ClienteFeign {
 
     @GetMapping("/{id}")

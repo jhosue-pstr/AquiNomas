@@ -30,7 +30,7 @@ spring:
             - Path=/inventario/**
             - Path=/ajustes_inventario/**
             - Path=/movimientos_inventario/**
-            -
+
         #========servicio cliente========#
         - id: servicio-cliente
           uri: lb://servicio-cliente

@@ -24,8 +24,7 @@ public interface ProductoFeign {
         producto.setCategoria(null);
         producto.setDescripcion("Descripción no disponible");
         producto.setPrecio(BigDecimal.ZERO);
-        producto.setStock(0);
-        producto.setStockMinimo(10); // ✅ nuevo atributo agregado
+
 
         return ResponseEntity.ok(producto);
     }
