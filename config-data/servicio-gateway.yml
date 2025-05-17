@@ -30,3 +30,22 @@ spring:
             - Path=/inventario/**
             - Path=/ajustes_inventario/**
             - Path=/movimientos_inventario/**
+            -
+        #========servicio cliente========#
+        - id: servicio-cliente
+          uri: lb://servicio-cliente
+          predicates:
+            - Path=/clientes/**
+
+        #========servicio producto========#
+        - id: servicio-producto
+          uri: lb://servicio-producto
+          predicates:
+            - Path=/categorias/**, /productos/**
+
+
+        #========servicio pedido=======#
+        - id: servicio-pedido
+          uri: lb://servicio-pedido
+          predicates:
+            - Path=/pedido/**

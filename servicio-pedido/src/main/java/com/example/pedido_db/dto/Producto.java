@@ -23,13 +23,10 @@ public class Producto {
     @Column(precision = 10, scale = 2)
     private BigDecimal precio;
 
-    private Integer stock;
-    private Integer stockMinimo;
-
     public Producto() {
-        this.stock = 0;              // valor por defecto como en la BD
-        this.stockMinimo = 10;       // valor por defecto como en la BD
+
     }
+
 
     public Integer getId() {
         return id;
@@ -71,30 +68,15 @@ public class Producto {
         this.precio = precio;
     }
 
-    public Integer getStock() {
-        return stock;
-    }
 
-    public void setStock(Integer stock) {
-        this.stock = stock;
-    }
 
-    public Integer getStockMinimo() {
-        return stockMinimo;
-    }
-
-    public void setStockMinimo(Integer stockMinimo) {
-        this.stockMinimo = stockMinimo;
-    }
-
-    public Producto(Integer id, String nombre, Categoria categoria, String descripcion, BigDecimal precio, Integer stock, Integer stockMinimo) {
+    public Producto(Integer id, String nombre, Categoria categoria, String descripcion, BigDecimal precio) {
         this.id = id;
         this.nombre = nombre;
         this.categoria = categoria;
         this.descripcion = descripcion;
         this.precio = precio;
-        this.stock = stock;
-        this.stockMinimo = stockMinimo;
+
     }
 
     @Override
@@ -105,8 +87,6 @@ public class Producto {
                 ", categoria=" + categoria +
                 ", descripcion='" + descripcion + '\'' +
                 ", precio=" + precio +
-                ", stock=" + stock +
-                ", stockMinimo=" + stockMinimo +
                 '}';
     }
 }
