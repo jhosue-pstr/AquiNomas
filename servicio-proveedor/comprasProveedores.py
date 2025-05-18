@@ -9,7 +9,7 @@ def registrar_en_eureka(puerto):
     if not eureka_registered:
         eureka_client.init(
             eureka_server="http://localhost:8090/eureka",
-            app_name="SERVICIO-PROVEEDOR",  # debe coincidir con el nombre registrado en Eureka y Config Server
+            app_name="SERVICIO-PROVEEDOR",  
             instance_id=f"servicio-proveedor-{puerto}",
             health_check_url=f"http://localhost:{puerto}/health",
             home_page_url=f"http://localhost:{puerto}",

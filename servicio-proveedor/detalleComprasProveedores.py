@@ -12,7 +12,7 @@ def registrar_en_eureka(puerto):
     if not eureka_registered:
         eureka_client.init(
             eureka_server="http://localhost:8090/eureka",
-            app_name="SERVICIO-PROVEEDOR",  # debe coincidir con el nombre registrado en Eureka y Config Server
+            app_name="SERVICIO-PROVEEDOR", 
             instance_id=f"servicio-proveedor-{puerto}",
             health_check_url=f"http://localhost:{puerto}/health",
             home_page_url=f"http://localhost:{puerto}",
@@ -169,7 +169,6 @@ def obtener_inventario_por_producto(producto_id):
 
 
 def crear_detalle_compra(compra_id, producto_id, cantidad):
-    # Obtener producto y su precio
     producto = obtener_producto_por_id(producto_id)
     if 'precio' not in producto:
         raise Exception("No se pudo obtener el precio del producto")
@@ -186,20 +185,19 @@ def crear_detalle_compra(compra_id, producto_id, cantidad):
     """, (compra_id, producto_id, cantidad, float(precio_unitario), float(total)))
     conexion.commit()
 
-    # Obtener inventario actual (por producto_id)
     try:
         print(f"Consultando inventario en: {URL_SERVICIO_INVENTARIO}/inventario/{producto_id}")
         response = requests.get(f"{URL_SERVICIO_INVENTARIO}/inventario/{producto_id}")
         response.raise_for_status()
         inventario = response.json()
 
-        inventario_id = inventario.get("id")  # Usar el ID correcto de la tabla inventario
+        inventario_id = inventario.get("id")  
         cantidad_actual = inventario.get("cantidad_disponible", 0) or 0
         nueva_cantidad = cantidad_actual + cantidad
 
         update_data = {
             "cantidad_disponible": nueva_cantidad,
-            "fecha_vencimiento": inventario.get("fecha_vencimiento")  # Mantenemos la fecha actual
+            "fecha_vencimiento": inventario.get("fecha_vencimiento") 
         }
 
         print(f"Actualizando inventario ID {inventario_id} con: {update_data}")
@@ -209,8 +207,6 @@ def crear_detalle_compra(compra_id, producto_id, cantidad):
 
     except Exception as e:
         print(f"Error al actualizar inventario: {e}")
-
-    # Registrar movimiento de inventario
     movimiento_data = {
         "producto_id": producto_id,
         "tipo_movimiento": "entrada",
@@ -228,7 +224,7 @@ def crear_detalle_compra(compra_id, producto_id, cantidad):
     cursor.execute("UPDATE compra_proveedor SET total = %s WHERE id = %s", (float(total_con_igv), compra_id))
     conexion.commit()
     conexion.close()
-    
+
 
 
 
