@@ -15,6 +15,6 @@ spring:
 
       routes:
         - id: servicio-inventario
-          uri: lb://servico-inventario
+          uri: lb://servicio-inventario
           predicates:
             - Path=/inventario/**
