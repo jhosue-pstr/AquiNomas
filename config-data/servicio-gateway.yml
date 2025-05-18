@@ -14,10 +14,16 @@ spring:
           enabled: true
 
       routes:
+      #===========servicio inventario==========#
         - id: servicio-inventario
           uri: lb://servicio-inventario
           predicates:
-            - Path=/inventario/**
+            - Path=/inventario/**, /ajustes_inventario/**, /movimientos_inventario/**
+      #==========servicio proveedor===========#
+        - id: servicio-inventario
+          uri: lb://servicio-inventario
+          predicates:
+            - Path=/proveedores/**, /productos-proveedores/**, /compras-proveedores/**, /detalle_compras/**
         #========servicio producto========#
         - id: servicio-producto
           uri: lb://servicio-producto
