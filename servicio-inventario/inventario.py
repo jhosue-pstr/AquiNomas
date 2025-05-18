@@ -2,24 +2,27 @@
 import mysql.connector
 import requests
 import py_eureka_client.eureka_client as eureka_client
-
+import socket
 eureka_registered = False
+
+
 
 def registrar_en_eureka(puerto):
     global eureka_registered
     if not eureka_registered:
         eureka_client.init(
-            eureka_server="http://localhost:8090/eureka",  
-            app_name="SERVICIO-INVENTARIO", 
-            instance_id=f"servicio-inventario-{puerto}",  
-            health_check_url=f"http://localhost:{puerto}/health",  
-            home_page_url=f"http://localhost:{puerto}",  
-            instance_port=puerto,  
+            eureka_server="http://localhost:8090/eureka",
+            app_name="SERVICIO-INVENTARIO",
+            instance_id=f"servicio-inventario-{puerto}",
+            health_check_url=f"http://localhost:{puerto}/health",
+            home_page_url=f"http://localhost:{puerto}",
+            instance_port=puerto
         )
         eureka_registered = True
         print(f"Instancia registrada en Eureka en el puerto {puerto}")
     else:
         print("Eureka client ya está registrado.")
+
 
 def cargar_configuracion(app_name, profile="default", config_server_url="http://localhost:7070"):
     url = f"{config_server_url}/{app_name}/{profile}"
