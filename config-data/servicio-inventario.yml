@@ -1,5 +1,5 @@
 server:
-  port: 5243
+  port: ${PORT:${SERVER_PORT:0}}
 
 springdoc:
   api-docs:
