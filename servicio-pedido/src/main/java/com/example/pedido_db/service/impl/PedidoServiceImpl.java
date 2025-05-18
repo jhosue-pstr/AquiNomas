@@ -1,6 +1,7 @@
 package com.example.pedido_db.service.impl;
 
 import com.example.pedido_db.dto.Inventario;
+import com.example.pedido_db.dto.InventarioUpdateRequest;
 import com.example.pedido_db.entity.Pedido;
 import com.example.pedido_db.dto.Cliente;
 import com.example.pedido_db.dto.Producto;
@@ -10,10 +11,14 @@ import com.example.pedido_db.feign.InventarioFeign;
 import com.example.pedido_db.feign.ProductoFeign;
 import com.example.pedido_db.repository.PedidoRepository;
 import com.example.pedido_db.service.PedidoService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,6 +36,8 @@ public class PedidoServiceImpl implements PedidoService {
     private ProductoFeign productoFeign;
     @Autowired
     private InventarioFeign inventarioFeign;
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public List<Pedido> listar() {
@@ -84,21 +91,17 @@ public class PedidoServiceImpl implements PedidoService {
 
 
 
+
+
     @Override
     public Pedido guardar(Pedido pedido) {
-        // Llamamos a inventario para obtener toda la lista de productos con cantidades
         List<Inventario> inventarios = inventarioFeign.obtenerInventarios();
 
         for (DetallePedido detalle : pedido.getDetalle()) {
-            // Filtramos el inventario para el producto actual, protegiéndonos de null
             Inventario inventarioProducto = inventarios.stream()
                     .filter(inv -> inv.getProductoId() != null && inv.getProductoId().equals(detalle.getProductoId()))
                     .findFirst()
-                    .orElse(null);
-
-            if (inventarioProducto == null) {
-                throw new RuntimeException("Producto no encontrado en inventario: " + detalle.getProductoId());
-            }
+                    .orElseThrow(() -> new RuntimeException("Producto no encontrado en inventario: " + detalle.getProductoId()));
 
             if (detalle.getCantidad() > inventarioProducto.getCantidadDisponible()) {
                 throw new RuntimeException("Cantidad solicitada (" + detalle.getCantidad() +
@@ -106,13 +109,76 @@ public class PedidoServiceImpl implements PedidoService {
                         ") para el producto: " + detalle.getProductoId());
             }
         }
-        // Si todo pasa, guardamos el pedido
-        return pedidoRepository.save(pedido);
+
+        Pedido pedidoGuardado = pedidoRepository.save(pedido);
+
+        for (DetallePedido detalle : pedido.getDetalle()) {
+            Inventario inventarioProducto = inventarios.stream()
+                    .filter(inv -> inv.getProductoId() != null && inv.getProductoId().equals(detalle.getProductoId()))
+                    .findFirst()
+                    .get();
+
+            int nuevaCantidad = inventarioProducto.getCantidadDisponible() - detalle.getCantidad();
+
+            InventarioUpdateRequest updateRequest = new InventarioUpdateRequest();
+            updateRequest.setCantidadDisponible(nuevaCantidad);
+
+            String fechaOriginal = inventarioProducto.getFechaVencimiento();
+            String fechaFormateada;
+
+            try {
+                ZonedDateTime zonedDateTime = ZonedDateTime.parse(fechaOriginal, DateTimeFormatter.RFC_1123_DATE_TIME);
+                fechaFormateada = zonedDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
+            } catch (Exception e) {
+                fechaFormateada = "9999-12-31";
+            }
+
+            updateRequest.setFechaVencimiento(fechaFormateada);
+
+            // Log para ver el JSON que se envía
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                String json = mapper.writeValueAsString(updateRequest);
+                System.out.println("JSON a enviar a inventario PUT: " + json);
+            } catch (Exception e) {
+                System.err.println("Error serializando JSON: " + e.getMessage());
+            }
+
+            try {
+                ResponseEntity<Void> response = inventarioFeign.actualizarInventario(inventarioProducto.getId(), updateRequest);
+                if (!response.getStatusCode().is2xxSuccessful()) {
+                    System.err.println("Error actualizando inventario producto " + inventarioProducto.getProductoId() +
+                            ": status " + response.getStatusCode());
+                }
+            } catch (Exception e) {
+                System.err.println("Excepción al actualizar inventario producto " + inventarioProducto.getProductoId() +
+                        ": " + e.getMessage());
+            }
+        }
+
+        return pedidoGuardado;
     }
 
 
 
 
+
+
+
+
+
+    public void actualizarInventarioConRestTemplate(Integer inventarioId, InventarioUpdateRequest updateRequest) {
+        String url = "http://localhost:5243/inventario/" + inventarioId;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<InventarioUpdateRequest> requestEntity = new HttpEntity<>(updateRequest, headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, String.class);
+
+        System.out.println("Respuesta actualización inventario con RestTemplate: " + response.getStatusCode());
+    }
 
 
 

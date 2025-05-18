@@ -12,6 +12,19 @@ public class Inventario {
     @JsonProperty("cantidad_disponible")
     private Integer cantidadDisponible;
 
+    @JsonProperty("fecha_vencimiento")
+    private String fechaVencimiento;  // Fecha en formato String, ejemplo "2025-12-31"
+
+    // Constructor vacío necesario para Jackson
+    public Inventario() {}
+
+    public Inventario(Integer id, Integer productoId, Integer cantidadDisponible, String fechaVencimiento) {
+        this.id = id;
+        this.productoId = productoId;
+        this.cantidadDisponible = cantidadDisponible;
+        this.fechaVencimiento = fechaVencimiento;
+    }
+
     // Getters y setters
 
     public Integer getId() {
@@ -38,18 +51,21 @@ public class Inventario {
         this.cantidadDisponible = cantidadDisponible;
     }
 
+    public String getFechaVencimiento() {
+        return fechaVencimiento;
+    }
+
+    public void setFechaVencimiento(String fechaVencimiento) {
+        this.fechaVencimiento = fechaVencimiento;
+    }
+
     @Override
     public String toString() {
         return "Inventario{" +
                 "id=" + id +
                 ", productoId=" + productoId +
                 ", cantidadDisponible=" + cantidadDisponible +
+                ", fechaVencimiento='" + fechaVencimiento + '\'' +
                 '}';
-    }
-
-    public Inventario(Integer id, Integer productoId, Integer cantidadDisponible) {
-        this.id = id;
-        this.productoId = productoId;
-        this.cantidadDisponible = cantidadDisponible;
     }
 }
