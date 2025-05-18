@@ -4,44 +4,17 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:http://localhost:8090/eureka}
-  instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+      defaultZone: http://localhost:8090/eureka
+
 spring:
   cloud:
     gateway:
       discovery:
         locator:
-          enable: true
-      routes:
-        #========servicio proveedor========#
-        - id: servicio-proveedor
-          uri: lb://servicio-proveedor
-          predicates:
-            - Path=/proveedores/**
+          enabled: true
 
-        #=========servicio inventario=======#
+      routes:
         - id: servicio-inventario
-          uri: lb://servicio-inventario
+          uri: lb://SERVICIO-INVENTARIO
           predicates:
             - Path=/inventario/**
-
-
-        #========servicio cliente========#
-        - id: servicio-cliente
-          uri: lb://servicio-cliente
-          predicates:
-            - Path=/clientes/**
-
-        #========servicio producto========#
-        - id: servicio-producto
-          uri: lb://servicio-producto
-          predicates:
-            - Path=/categorias/**, /productos/**
-
-
-        #========servicio pedido=======#
-        - id: servicio-pedido
-          uri: lb://servicio-pedido
-          predicates:
-            - Path=/pedido/**
