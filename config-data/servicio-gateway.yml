@@ -20,8 +20,8 @@ spring:
           predicates:
             - Path=/inventario/**, /ajustes_inventario/**, /movimientos_inventario/**
       #==========servicio proveedor===========#
-        - id: servicio-inventario
-          uri: lb://servicio-inventario
+        - id: servicio-proveedor
+          uri: lb://servicio-proveedor
           predicates:
             - Path=/proveedores/**, /productos-proveedores/**, /compras-proveedores/**, /detalle_compras/**
         #========servicio producto========#
