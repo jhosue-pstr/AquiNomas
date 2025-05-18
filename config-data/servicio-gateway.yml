@@ -14,12 +14,20 @@ spring:
           enabled: true
 
       routes:
+<<<<<<< HEAD
       #===========servicio inventario==========#
+=======
+        #===========servicio inventario==========#
+>>>>>>> 606639d (arreglando el gateway)
         - id: servicio-inventario
           uri: lb://servicio-inventario
           predicates:
             - Path=/inventario/**, /ajustes_inventario/**, /movimientos_inventario/**
+<<<<<<< HEAD
       #==========servicio proveedor===========#
+=======
+        #==========servicio proveedor===========#
+>>>>>>> 606639d (arreglando el gateway)
         - id: servicio-proveedor
           uri: lb://servicio-proveedor
           predicates:
@@ -28,4 +36,8 @@ spring:
         - id: servicio-producto
           uri: lb://servicio-producto
           predicates:
+<<<<<<< HEAD
             - Path=/categorias/**, /productos/**
+=======
+            - Path=/categorias/**, /productos/**
+>>>>>>> 606639d (arreglando el gateway)

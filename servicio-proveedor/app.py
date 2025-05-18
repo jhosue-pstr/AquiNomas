@@ -85,13 +85,7 @@ def eliminar_productos_proveedor(proveedor_id, producto_id):
     productosProveedores.eliminar_producto_proveedor(proveedor_id, producto_id)
     return jsonify({"mensaje": "Relación producto-proveedor eliminada correctamente"})
 
-@app.route('/productos-proveedores/proveedor/<int:proveedor_id>', methods=['GET'])
-def obtener_relaciones_por_proveedor(proveedor_id):
-    try:
-        relaciones = obtener_relaciones_por_proveedor_id(proveedor_id)
-        return jsonify(relaciones)
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+
 
 #======================= compras Proveedores =============+++#
 @app.route('/compras-proveedores', methods=['POST'])
