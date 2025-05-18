@@ -1,14 +1,17 @@
 package com.example.pedido_db.service.impl;
 
+import com.example.pedido_db.dto.Inventario;
 import com.example.pedido_db.entity.Pedido;
 import com.example.pedido_db.dto.Cliente;
 import com.example.pedido_db.dto.Producto;
 import com.example.pedido_db.entity.DetallePedido;
 import com.example.pedido_db.feign.ClienteFeign;
+import com.example.pedido_db.feign.InventarioFeign;
 import com.example.pedido_db.feign.ProductoFeign;
 import com.example.pedido_db.repository.PedidoRepository;
 import com.example.pedido_db.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +29,8 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Autowired
     private ProductoFeign productoFeign;
+    @Autowired
+    private InventarioFeign inventarioFeign;
 
     @Override
     public List<Pedido> listar() {
@@ -79,12 +84,37 @@ public class PedidoServiceImpl implements PedidoService {
 
 
 
-    // Guardar un nuevo pedido
     @Override
     public Pedido guardar(Pedido pedido) {
-        // Guardamos el pedido en la base de datos
+        // Llamamos a inventario para obtener toda la lista de productos con cantidades
+        List<Inventario> inventarios = inventarioFeign.obtenerInventarios();
+
+        for (DetallePedido detalle : pedido.getDetalle()) {
+            // Filtramos el inventario para el producto actual, protegiéndonos de null
+            Inventario inventarioProducto = inventarios.stream()
+                    .filter(inv -> inv.getProductoId() != null && inv.getProductoId().equals(detalle.getProductoId()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (inventarioProducto == null) {
+                throw new RuntimeException("Producto no encontrado en inventario: " + detalle.getProductoId());
+            }
+
+            if (detalle.getCantidad() > inventarioProducto.getCantidadDisponible()) {
+                throw new RuntimeException("Cantidad solicitada (" + detalle.getCantidad() +
+                        ") excede la cantidad disponible (" + inventarioProducto.getCantidadDisponible() +
+                        ") para el producto: " + detalle.getProductoId());
+            }
+        }
+        // Si todo pasa, guardamos el pedido
         return pedidoRepository.save(pedido);
     }
+
+
+
+
+
+
 
     // Actualizar un pedido existente
     @Override

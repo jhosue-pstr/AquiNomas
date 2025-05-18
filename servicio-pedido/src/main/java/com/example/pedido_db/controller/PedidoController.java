@@ -26,9 +26,16 @@ public class PedidoController {
     }
     // Guardar un nuevo pedido
     @PostMapping
-    public ResponseEntity<Pedido> save(@RequestBody Pedido pedido) {
-        return ResponseEntity.ok(pedidoService.guardar(pedido));
+    public ResponseEntity<?> save(@RequestBody Pedido pedido) {
+        try {
+            Pedido pedidoGuardado = pedidoService.guardar(pedido);
+            return ResponseEntity.ok(pedidoGuardado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
+
+
 
     // Actualizar un pedido existente
     @PutMapping

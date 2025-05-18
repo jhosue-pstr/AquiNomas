@@ -1,14 +1,19 @@
 package com.example.pedido_db.dto;
 
-import jakarta.persistence.Column;
-import lombok.Data;
+
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-@Data
+@Entity
 public class Cliente {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String nombre;
     private String apellido;
     private String dni;
@@ -17,11 +22,31 @@ public class Cliente {
     private String email;
     private String direccion;
 
-    @Column(precision = 10, scale = 2)
+    @Column(precision = 5, scale = 2)
     private BigDecimal descuento;
 
+    @Column(name = "fecha_registro", updatable = false)
+    @CreationTimestamp
     private Timestamp fechaRegistro;
 
+    // Constructor vacío
+    public Cliente() {
+    }
+
+    // Constructor con argumentos
+    public Cliente(String nombre, String apellido, String dni, String ruc, String telefono,
+                   String email, String direccion, BigDecimal descuento) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.dni = dni;
+        this.ruc = ruc;
+        this.telefono = telefono;
+        this.email = email;
+        this.direccion = direccion;
+        this.descuento = descuento;
+    }
+
+    // Getters y Setters
     public Integer getId() {
         return id;
     }
@@ -78,20 +103,20 @@ public class Cliente {
         this.email = email;
     }
 
-    public BigDecimal getDescuento() {
-        return descuento;
-    }
-
-    public void setDescuento(BigDecimal descuento) {
-        this.descuento = descuento;
-    }
-
     public String getDireccion() {
         return direccion;
     }
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public BigDecimal getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(BigDecimal descuento) {
+        this.descuento = descuento;
     }
 
     public Timestamp getFechaRegistro() {
@@ -102,21 +127,7 @@ public class Cliente {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public Cliente(Integer id, String nombre, String apellido, String dni, String ruc, String telefono, String email, String direccion, BigDecimal descuento, Timestamp fechaRegistro) {
-        this.id = id;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.dni = dni;
-        this.ruc = ruc;
-        this.telefono = telefono;
-        this.email = email;
-        this.direccion = direccion;
-        this.descuento = descuento;
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public Cliente() {}
-
+    // toString
     @Override
     public String toString() {
         return "Cliente{" +

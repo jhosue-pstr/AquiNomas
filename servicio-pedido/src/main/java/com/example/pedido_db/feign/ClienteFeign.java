@@ -16,7 +16,7 @@ public interface ClienteFeign {
     @CircuitBreaker(name = "clienteCircuitBreaker", fallbackMethod = "fallbackClienteById")
     ResponseEntity<Cliente> listById(@PathVariable Integer id);
 
-    // Fallback method en el mismo Feign
+    // Método fallback para cuando el servicio cliente no responde
     default ResponseEntity<Cliente> fallbackClienteById(Integer id, Throwable e) {
         Cliente cliente = new Cliente();
         cliente.setId(id);
@@ -27,8 +27,8 @@ public interface ClienteFeign {
         cliente.setTelefono("Teléfono no disponible");
         cliente.setEmail("Email no disponible");
         cliente.setDireccion("Dirección no disponible");
-        cliente.setDescuento(BigDecimal.ZERO);  // Aquí cambiamos a BigDecimal.ZERO
-        cliente.setFechaRegistro(null); // Dejar como null si no se encuentra
+        cliente.setDescuento(BigDecimal.ZERO);
+        cliente.setFechaRegistro(null);
 
         return ResponseEntity.ok(cliente);
     }
