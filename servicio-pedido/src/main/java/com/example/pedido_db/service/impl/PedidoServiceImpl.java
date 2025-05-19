@@ -95,23 +95,27 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public Pedido guardar(Pedido pedido) {
+        // Obtén la lista completa de inventarios desde el microservicio
         List<Inventario> inventarios = inventarioFeign.obtenerInventarios();
 
+        // Validar que cada producto del pedido exista en inventario y tenga suficiente stock
         for (DetallePedido detalle : pedido.getDetalle()) {
             Inventario inventarioProducto = inventarios.stream()
                     .filter(inv -> inv.getProductoId() != null && inv.getProductoId().equals(detalle.getProductoId()))
                     .findFirst()
-                    .orElseThrow(() -> new RuntimeException("Producto no encontrado en inventario: " + detalle.getProductoId()));
+                    .orElseThrow(() -> new RuntimeException("Producto no encontrado en inventario: ID " + detalle.getProductoId()));
 
             if (detalle.getCantidad() > inventarioProducto.getCantidadDisponible()) {
                 throw new RuntimeException("Cantidad solicitada (" + detalle.getCantidad() +
                         ") excede la cantidad disponible (" + inventarioProducto.getCantidadDisponible() +
-                        ") para el producto: " + detalle.getProductoId());
+                        ") para el producto ID: " + detalle.getProductoId());
             }
         }
 
+        // Si todo está ok, guarda el pedido
         Pedido pedidoGuardado = pedidoRepository.save(pedido);
 
+        // Actualiza el inventario descontando las cantidades pedidas
         for (DetallePedido detalle : pedido.getDetalle()) {
             Inventario inventarioProducto = inventarios.stream()
                     .filter(inv -> inv.getProductoId() != null && inv.getProductoId().equals(detalle.getProductoId()))
@@ -123,19 +127,18 @@ public class PedidoServiceImpl implements PedidoService {
             InventarioUpdateRequest updateRequest = new InventarioUpdateRequest();
             updateRequest.setCantidadDisponible(nuevaCantidad);
 
+            // Formatear la fecha para que el backend la acepte correctamente
             String fechaOriginal = inventarioProducto.getFechaVencimiento();
             String fechaFormateada;
-
             try {
                 ZonedDateTime zonedDateTime = ZonedDateTime.parse(fechaOriginal, DateTimeFormatter.RFC_1123_DATE_TIME);
                 fechaFormateada = zonedDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
             } catch (Exception e) {
                 fechaFormateada = "9999-12-31";
             }
-
             updateRequest.setFechaVencimiento(fechaFormateada);
 
-            // Log para ver el JSON que se envía
+            // Log del JSON que se envía para facilitar debugging
             ObjectMapper mapper = new ObjectMapper();
             try {
                 String json = mapper.writeValueAsString(updateRequest);
@@ -144,14 +147,15 @@ public class PedidoServiceImpl implements PedidoService {
                 System.err.println("Error serializando JSON: " + e.getMessage());
             }
 
+            // Realiza la llamada para actualizar el inventario
             try {
                 ResponseEntity<Void> response = inventarioFeign.actualizarInventario(inventarioProducto.getId(), updateRequest);
                 if (!response.getStatusCode().is2xxSuccessful()) {
-                    System.err.println("Error actualizando inventario producto " + inventarioProducto.getProductoId() +
+                    System.err.println("Error actualizando inventario producto ID " + inventarioProducto.getProductoId() +
                             ": status " + response.getStatusCode());
                 }
             } catch (Exception e) {
-                System.err.println("Excepción al actualizar inventario producto " + inventarioProducto.getProductoId() +
+                System.err.println("Excepción al actualizar inventario producto ID " + inventarioProducto.getProductoId() +
                         ": " + e.getMessage());
             }
         }
@@ -167,7 +171,8 @@ public class PedidoServiceImpl implements PedidoService {
 
 
 
-    public void actualizarInventarioConRestTemplate(Integer inventarioId, InventarioUpdateRequest updateRequest) {
+
+   /* public void actualizarInventarioConRestTemplate(Integer inventarioId, InventarioUpdateRequest updateRequest) {
         String url = "http://localhost:5243/inventario/" + inventarioId;
 
         HttpHeaders headers = new HttpHeaders();
@@ -178,8 +183,7 @@ public class PedidoServiceImpl implements PedidoService {
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, String.class);
 
         System.out.println("Respuesta actualización inventario con RestTemplate: " + response.getStatusCode());
-    }
-
+    }*/
 
 
     // Actualizar un pedido existente
@@ -188,6 +192,7 @@ public class PedidoServiceImpl implements PedidoService {
         // Actualizamos el pedido en la base de datos
         return pedidoRepository.save(pedido);
     }
+
 
     // Eliminar un pedido por ID
     @Override

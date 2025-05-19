@@ -38,10 +38,13 @@ public class PedidoController {
 
 
     // Actualizar un pedido existente
-    @PutMapping
-    public ResponseEntity<Pedido> update(@RequestBody Pedido pedido) {
-        return ResponseEntity.ok(pedidoService.actualizar(pedido));
+    @PutMapping("/{id}")
+    public ResponseEntity<Pedido> update(@PathVariable Integer id, @RequestBody Pedido pedido) {
+        pedido.setId(id);  // asegura que el pedido tenga
+        Pedido pedidoActualizado = pedidoService.actualizar(pedido);
+        return ResponseEntity.ok(pedidoActualizado);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Pedido> listById(@PathVariable Integer id) {
