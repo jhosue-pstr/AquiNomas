@@ -7,7 +7,6 @@
     <list default="true" id="5b4de488-234a-4802-b711-2acbc00895dc" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/servicio-gateway.yml" beforeDir="false" afterPath="$PROJECT_DIR$/servicio-gateway.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/entity/Detalle_Venta.java" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/entity/Detalle_Venta.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +67,7 @@
       <workItem from="1747255137147" duration="1687000" />
       <workItem from="1747338755173" duration="111000" />
       <workItem from="1747702860324" duration="595000" />
-      <workItem from="1747703641162" duration="1331000" />
+      <workItem from="1747703641162" duration="2433000" />
     </task>
     <servers />
   </component>

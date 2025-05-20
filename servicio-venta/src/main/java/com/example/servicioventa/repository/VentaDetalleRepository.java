@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface VentaDetalleRepository extends JpaRepository<Detalle_Venta, Integer> {
     Optional<Detalle_Venta> findById(Integer id);
 
-    void deleteById(Long aLong);
+    void deleteById(Integer id);
 }

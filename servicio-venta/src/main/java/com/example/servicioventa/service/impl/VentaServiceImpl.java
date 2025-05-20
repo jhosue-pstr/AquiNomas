@@ -22,7 +22,7 @@ public class VentaServiceImpl implements VentaService {
 
     @Override
     public Venta guardar(Venta venta) {
-        // Lógica adicional antes de guardar la venta (por ejemplo, calcular total)
+        //
         return ventaRepository.save(venta);
     }
 

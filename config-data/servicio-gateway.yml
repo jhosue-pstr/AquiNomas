@@ -39,6 +39,6 @@ spring:
         - id: servicio-venta
           uri: lb://servicio-venta
           predicates:
-            - Path=/ventas/**, /ventasdetalle/**, /ventasdetalle/**
+            - Path=/ventas/**, /ventasdetalle/**, /comprobantes/**
         # ============================================
 

@@ -11,7 +11,7 @@ public class Comprobante_pago {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false)
     private String tipo; // "Boleta" o "Factura"
@@ -25,7 +25,7 @@ public class Comprobante_pago {
     @Column(nullable = false)
     private LocalDateTime fechaEmision;
 
-    private String cliente_id;
+    private Integer cliente_id;
 
     @Column(length = 255)
     private String nombreCliente; // Se usa en Boleta
@@ -48,11 +48,11 @@ public class Comprobante_pago {
     @Column(nullable = false, length = 50)
     private String estado; // Pendiente, Pagado, Anulado
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -88,11 +88,11 @@ public class Comprobante_pago {
         this.fechaEmision = fechaEmision;
     }
 
-    public String getCliente_id() {
+    public Integer getCliente_id() {
         return cliente_id;
     }
 
-    public void setCliente_id(String cliente_id) {
+    public void setCliente_id(Integer cliente_id) {
         this.cliente_id = cliente_id;
     }
 
@@ -163,7 +163,7 @@ public class Comprobante_pago {
                 ", numeroSerie='" + numeroSerie + '\'' +
                 ", numeroComprobante='" + numeroComprobante + '\'' +
                 ", fechaEmision=" + fechaEmision +
-                ", cliente_id='" + cliente_id + '\'' +
+                ", cliente_id=" + cliente_id +
                 ", nombreCliente='" + nombreCliente + '\'' +
                 ", rucCliente='" + rucCliente + '\'' +
                 ", direccionCliente='" + direccionCliente + '\'' +
@@ -174,7 +174,7 @@ public class Comprobante_pago {
                 '}';
     }
 
-    public Comprobante_pago(Long id, String tipo, String numeroSerie, String numeroComprobante, LocalDateTime fechaEmision, String cliente_id, String nombreCliente, String rucCliente, String direccionCliente, BigDecimal total, BigDecimal igv, BigDecimal montoNeto, String estado) {
+    public Comprobante_pago(Integer id, String tipo, String numeroSerie, String numeroComprobante, LocalDateTime fechaEmision, Integer cliente_id, String nombreCliente, String rucCliente, String direccionCliente, BigDecimal total, BigDecimal igv, BigDecimal montoNeto, String estado) {
         this.id = id;
         this.tipo = tipo;
         this.numeroSerie = numeroSerie;
