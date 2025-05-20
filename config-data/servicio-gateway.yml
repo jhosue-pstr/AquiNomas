@@ -1,5 +1,5 @@
 server:
-  port: 8085
+  port: 9000
 
 eureka:
   client:
@@ -35,7 +35,10 @@ spring:
           predicates:
             - Path=/pedido/**
 
+        # La rama de ventas (nelson)
         - id: servicio-venta
           uri: lb://servicio-venta
           predicates:
-            - Path=/ventas/**, /ventasdetalle/**
+            - Path=/ventas/**, /ventasdetalle/**, /ventasdetalle/**
+        # ============================================
+

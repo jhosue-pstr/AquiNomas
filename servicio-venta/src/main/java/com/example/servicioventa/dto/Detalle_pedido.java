@@ -1,19 +1,17 @@
-package com.example.servicioventa.entity;
+package com.example.servicioventa.dto;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.math.BigDecimal;
 
-@Entity
-public class Detalle_Venta {
+public class Detalle_pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer venta_id;
     private Integer pedido_id;
+    private Integer producto_id;
     private Integer cantidad;
     private BigDecimal precio_unitario;
     private BigDecimal total;
@@ -26,20 +24,20 @@ public class Detalle_Venta {
         this.id = id;
     }
 
-    public Integer getVenta_id() {
-        return venta_id;
-    }
-
-    public void setVenta_id(Integer venta_id) {
-        this.venta_id = venta_id;
-    }
-
     public Integer getPedido_id() {
         return pedido_id;
     }
 
     public void setPedido_id(Integer pedido_id) {
         this.pedido_id = pedido_id;
+    }
+
+    public Integer getProducto_id() {
+        return producto_id;
+    }
+
+    public void setProducto_id(Integer producto_id) {
+        this.producto_id = producto_id;
     }
 
     public Integer getCantidad() {
@@ -63,30 +61,6 @@ public class Detalle_Venta {
     }
 
     public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
-
-    public Detalle_Venta() {
-    }
-
-    @Override
-    public String toString() {
-        return "Detalle_Venta{" +
-                "id=" + id +
-                ", venta_id=" + venta_id +
-                ", pedido_id=" + pedido_id +
-                ", cantidad=" + cantidad +
-                ", precio_unitario=" + precio_unitario +
-                ", total=" + total +
-                '}';
-    }
-
-    public Detalle_Venta(Integer id, Integer venta_id, Integer pedido_id, Integer cantidad, BigDecimal precio_unitario, BigDecimal total) {
-        this.id = id;
-        this.venta_id = venta_id;
-        this.pedido_id = pedido_id;
-        this.cantidad = cantidad;
-        this.precio_unitario = precio_unitario;
         this.total = total;
     }
 }
