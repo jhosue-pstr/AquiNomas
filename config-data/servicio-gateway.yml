@@ -11,7 +11,24 @@ spring:
     gateway:
       discovery:
         locator:
+<<<<<<< Updated upstream
           enabled: true
+=======
+          enable: true
+      routes:
+        #========servicio cliente=======#
+        - id: servicio-cliente
+          uri: lb://servicio-cliente
+          predicates:
+            - Path=/clientes/**
+        #========servicio compra=======#
+
+        - id: servicio-compra
+          uri: lb://servicio-compra
+          predicates:
+            - Path=/compras/**
+        #========servicio producto=======#
+>>>>>>> Stashed changes
 
       routes:
 
@@ -30,3 +47,18 @@ spring:
           uri: lb://servicio-producto
           predicates:
             - Path=/categorias/**, /productos/**
+<<<<<<< Updated upstream
+=======
+
+        #========servicio pedido=======#
+        - id: servicio-pedido
+          uri: lb://servicio-pedido
+          predicates:
+            - Path=/pedido/**
+        #========servicio venta=======#
+
+        - id: servicio-venta
+          uri: lb://servicio-venta
+          predicates:
+            - Path=/ventas/**, /ventasdetalle/**, /comprobantes/**
+>>>>>>> Stashed changes
