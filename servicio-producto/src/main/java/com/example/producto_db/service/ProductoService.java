@@ -6,6 +6,10 @@ import java.util.Optional;
 
 public interface ProductoService {
     List<Producto> listar();
+
+
+    List<Producto> listarProductosDisponibles();
+
     Producto guardar(Producto producto);
     Optional<Producto> listarPorId(Integer id);
     Producto actualizar(Producto producto);

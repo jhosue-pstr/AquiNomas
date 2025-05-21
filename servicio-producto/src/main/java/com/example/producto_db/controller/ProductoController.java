@@ -29,6 +29,12 @@ public class ProductoController {
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado con id: " + id));
     }
 
+    @GetMapping("/producto-disponible")
+    public List<Producto> listarProductosDisponibles() {
+        return productoService.listarProductosDisponibles();
+    }
+
+
     @PostMapping
     public Producto crear(@RequestBody Producto producto) {
         return productoService.guardar(producto);

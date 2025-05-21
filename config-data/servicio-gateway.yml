@@ -41,7 +41,7 @@ spring:
         - id: servicio-producto
           uri: lb://servicio-producto
           predicates:
-            - Path=/categorias/**, /productos/**
+            - Path=/categorias/**, /productos/**, /producto-disponible/**
 
 
         #========servicio pedido=======#
