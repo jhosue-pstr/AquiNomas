@@ -1,5 +1,6 @@
 package com.example.producto_db.controller;
 
+import com.example.producto_db.dto.ProductoDisponibleDTO;
 import com.example.producto_db.entity.Producto;
 import com.example.producto_db.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,13 @@ public class ProductoController {
         return productoService.listarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado con id: " + id));
     }
+
+    @GetMapping("/producto-disponible")
+    public List<ProductoDisponibleDTO> listarProductosDisponibles() {
+        return productoService.listarProductosDisponibles();
+    }
+
+
 
     @PostMapping
     public Producto crear(@RequestBody Producto producto) {

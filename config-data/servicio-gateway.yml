@@ -18,18 +18,13 @@ spring:
         - id: servicio-proveedor
           uri: lb://servicio-proveedor
           predicates:
-            - Path=/proveedores/**
-            - Path=/productos-proveedores/**
-            - Path=/compras-proveedores/**
-            - Path=/detalle_compras/**
+            - Path=/proveedores/**, /productos-proveedores/**, /compras-proveedores/**, /detalle_compras/**
 
         #=========servicio inventario=======#
         - id: servicio-inventario
           uri: lb://servicio-inventario
           predicates:
-            - Path=/inventario/**
-            - Path=/ajustes_inventario/**
-            - Path=/movimientos_inventario/**
+            - Path=/inventario/**, /ajustes_inventario/**, /movimientos_inventario/**
 
         #========servicio cliente========#
         - id: servicio-cliente
@@ -41,7 +36,7 @@ spring:
         - id: servicio-producto
           uri: lb://servicio-producto
           predicates:
-            - Path=/categorias/**, /productos/**
+            - Path=/categorias/**, /productos/**, /producto-disponible/**
 
 
         #========servicio pedido=======#
