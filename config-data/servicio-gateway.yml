@@ -4,14 +4,14 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:http://localhost:8090/eureka}
-  instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+      defaultZone: http://localhost:8090/eureka
+
 spring:
   cloud:
     gateway:
       discovery:
         locator:
+<<<<<<< HEAD
           enable: true
       routes:
         #========servicio proveedor========#
@@ -19,12 +19,18 @@ spring:
           uri: lb://servicio-proveedor
           predicates:
             - Path=/proveedores/**, /productos-proveedores/**, /compras-proveedores/**, /detalle_compras/**
+=======
+          enabled: true
+>>>>>>> pastor
 
-        #=========servicio inventario=======#
+      routes:
+
+        #===========servicio inventario==========#
         - id: servicio-inventario
           uri: lb://servicio-inventario
           predicates:
             - Path=/inventario/**, /ajustes_inventario/**, /movimientos_inventario/**
+<<<<<<< HEAD
 
         #========servicio cliente========#
         - id: servicio-cliente
@@ -32,10 +38,18 @@ spring:
           predicates:
             - Path=/clientes/**
 
+=======
+        #==========servicio proveedor===========#
+        - id: servicio-proveedor
+          uri: lb://servicio-proveedor
+          predicates:
+            - Path=/proveedores/**, /productos-proveedores/**, /compras-proveedores/**, /detalle_compras/**
+>>>>>>> pastor
         #========servicio producto========#
         - id: servicio-producto
           uri: lb://servicio-producto
           predicates:
+<<<<<<< HEAD
             - Path=/categorias/**, /productos/**, /producto-disponible/**
 
 
@@ -44,3 +58,6 @@ spring:
           uri: lb://servicio-pedido
           predicates:
             - Path=/pedido/**
+=======
+            - Path=/categorias/**, /productos/**
+>>>>>>> pastor

@@ -10,19 +10,23 @@ eureka_registered = False
 def registrar_en_eureka(puerto):
     global eureka_registered
     if not eureka_registered:
+        ip = "127.0.0.1" 
+
+        import py_eureka_client.eureka_client as eureka_client
         eureka_client.init(
             eureka_server="http://localhost:8090/eureka",
-            app_name="SERVICIO-PROVEEDOR",  # debe coincidir con el nombre registrado en Eureka y Config Server
+            app_name="SERVICIO-PROVEEDOR",
             instance_id=f"servicio-proveedor-{puerto}",
-            health_check_url=f"http://localhost:{puerto}/health",
-            home_page_url=f"http://localhost:{puerto}",
+            health_check_url=f"http://{ip}:{puerto}/health",
+            home_page_url=f"http://{ip}:{puerto}",
+            instance_host=ip,
             instance_port=puerto,
         )
         eureka_registered = True
-        print(f"Instancia registrada en Eureka en el puerto {puerto}")
-    else:
-        print("Eureka client ya está registrado.")
- 
+        print(f"Instancia registrada en Eureka correctamente: http://{ip}:{puerto}")
+
+
+
 def cargar_configuracion(app_name="servicio-proveedor", profile="default", config_server_url="http://localhost:7070"):
     url = f"{config_server_url}/{app_name}/{profile}"
     response = requests.get(url, auth=("root", "123456"))
@@ -169,7 +173,6 @@ def obtener_inventario_por_producto(producto_id):
 
 
 def crear_detalle_compra(compra_id, producto_id, cantidad):
-    # Obtener producto y su precio
     producto = obtener_producto_por_id(producto_id)
     if 'precio' not in producto:
         raise Exception("No se pudo obtener el precio del producto")
@@ -186,20 +189,19 @@ def crear_detalle_compra(compra_id, producto_id, cantidad):
     """, (compra_id, producto_id, cantidad, float(precio_unitario), float(total)))
     conexion.commit()
 
-    # Obtener inventario actual (por producto_id)
     try:
         print(f"Consultando inventario en: {URL_SERVICIO_INVENTARIO}/inventario/{producto_id}")
         response = requests.get(f"{URL_SERVICIO_INVENTARIO}/inventario/{producto_id}")
         response.raise_for_status()
         inventario = response.json()
 
-        inventario_id = inventario.get("id")  # Usar el ID correcto de la tabla inventario
+        inventario_id = inventario.get("id")  
         cantidad_actual = inventario.get("cantidad_disponible", 0) or 0
         nueva_cantidad = cantidad_actual + cantidad
 
         update_data = {
             "cantidad_disponible": nueva_cantidad,
-            "fecha_vencimiento": inventario.get("fecha_vencimiento")  # Mantenemos la fecha actual
+            "fecha_vencimiento": inventario.get("fecha_vencimiento") 
         }
 
         print(f"Actualizando inventario ID {inventario_id} con: {update_data}")
@@ -209,8 +211,6 @@ def crear_detalle_compra(compra_id, producto_id, cantidad):
 
     except Exception as e:
         print(f"Error al actualizar inventario: {e}")
-
-    # Registrar movimiento de inventario
     movimiento_data = {
         "producto_id": producto_id,
         "tipo_movimiento": "entrada",
@@ -228,7 +228,7 @@ def crear_detalle_compra(compra_id, producto_id, cantidad):
     cursor.execute("UPDATE compra_proveedor SET total = %s WHERE id = %s", (float(total_con_igv), compra_id))
     conexion.commit()
     conexion.close()
-    
+
 
 
 
