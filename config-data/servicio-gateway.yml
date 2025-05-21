@@ -11,31 +11,49 @@ spring:
     gateway:
       discovery:
         locator:
-          enable: true
+        Updated upstream
+          enabled: true
       routes:
+        #========servicio cliente=======#
         - id: servicio-cliente
           uri: lb://servicio-cliente
           predicates:
             - Path=/clientes/**
+        #========servicio compra=======#
+
         - id: servicio-compra
           uri: lb://servicio-compra
           predicates:
             - Path=/compras/**
+        #========servicio producto=======#
 
+      routes:
+
+        #===========servicio inventario==========#
+        - id: servicio-inventario
+          uri: lb://servicio-inventario
+          predicates:
+            - Path=/inventario/**, /ajustes_inventario/**, /movimientos_inventario/**
+        #==========servicio proveedor===========#
+        - id: servicio-proveedor
+          uri: lb://servicio-proveedor
+          predicates:
+            - Path=/proveedores/**, /productos-proveedores/**, /compras-proveedores/**, /detalle_compras/**
+        #========servicio producto========#
         - id: servicio-producto
           uri: lb://servicio-producto
           predicates:
             - Path=/categorias/**, /productos/**
+
 
         #========servicio pedido=======#
         - id: servicio-pedido
           uri: lb://servicio-pedido
           predicates:
             - Path=/pedido/**
+        #========servicio venta=======#
 
-        # La rama de ventas (nelson)
         - id: servicio-venta
           uri: lb://servicio-venta
           predicates:
             - Path=/ventas/**, /ventasdetalle/**, /comprobantes/**
-        # ============================================
