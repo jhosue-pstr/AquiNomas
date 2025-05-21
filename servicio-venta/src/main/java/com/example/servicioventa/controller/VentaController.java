@@ -3,8 +3,12 @@ package com.example.servicioventa.controller;
 import com.example.servicioventa.entity.Venta;
 import com.example.servicioventa.service.VentaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,14 +24,24 @@ public class VentaController {
         return ventaService.listar();
     }
 
+//    @GetMapping("/{id}")
+//    public Optional<Venta> obtenerVentaPorId(@PathVariable Integer id) {
+//        return ventaService.listarPorId(id);
+//    }
+
     @GetMapping("/{id}")
-    public Optional<Venta> obtenerVentaPorId(@PathVariable Integer id) {
-        return ventaService.listarPorId(id);
+    public ResponseEntity<Venta> obtenerVentaPorId(@PathVariable Integer id) {
+        return ventaService.listarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Venta no encontrada"));
     }
 
     @PostMapping
-    public Venta crearVenta(@RequestBody Venta venta) {
-        return ventaService.guardar(venta);
+    public ResponseEntity<Venta> crearVenta(@RequestBody Venta venta) {
+        if (venta.getTotal().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El total debe ser mayor a cero.");
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(ventaService.guardar(venta));
     }
 
     @PutMapping("/{id}")
@@ -37,7 +51,9 @@ public class VentaController {
     }
 
     @DeleteMapping("/{id}")
-    public void eliminarVenta(@PathVariable Integer id) {
+    public ResponseEntity<Void> eliminarVenta(@PathVariable Integer id) {
         ventaService.eliminarPorId(id);
+        return ResponseEntity.noContent().build();
     }
+
 }

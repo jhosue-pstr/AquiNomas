@@ -11,53 +11,31 @@ spring:
     gateway:
       discovery:
         locator:
-<<<<<<< HEAD
           enable: true
       routes:
-        #========servicio proveedor========#
-        - id: servicio-proveedor
-          uri: lb://servicio-proveedor
-          predicates:
-            - Path=/proveedores/**, /productos-proveedores/**, /compras-proveedores/**, /detalle_compras/**
-=======
-          enabled: true
->>>>>>> pastor
-
-      routes:
-
-        #===========servicio inventario==========#
-        - id: servicio-inventario
-          uri: lb://servicio-inventario
-          predicates:
-            - Path=/inventario/**, /ajustes_inventario/**, /movimientos_inventario/**
-<<<<<<< HEAD
-
-        #========servicio cliente========#
         - id: servicio-cliente
           uri: lb://servicio-cliente
           predicates:
             - Path=/clientes/**
-
-=======
-        #==========servicio proveedor===========#
-        - id: servicio-proveedor
-          uri: lb://servicio-proveedor
+        - id: servicio-compra
+          uri: lb://servicio-compra
           predicates:
-            - Path=/proveedores/**, /productos-proveedores/**, /compras-proveedores/**, /detalle_compras/**
->>>>>>> pastor
-        #========servicio producto========#
+            - Path=/compras/**
+
         - id: servicio-producto
           uri: lb://servicio-producto
           predicates:
-<<<<<<< HEAD
-            - Path=/categorias/**, /productos/**, /producto-disponible/**
-
+            - Path=/categorias/**, /productos/**
 
         #========servicio pedido=======#
         - id: servicio-pedido
           uri: lb://servicio-pedido
           predicates:
             - Path=/pedido/**
-=======
-            - Path=/categorias/**, /productos/**
->>>>>>> pastor
+
+        # La rama de ventas (nelson)
+        - id: servicio-venta
+          uri: lb://servicio-venta
+          predicates:
+            - Path=/ventas/**, /ventasdetalle/**, /comprobantes/**
+        # ============================================

@@ -1,9 +1,6 @@
 package com.example.servicioventa.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 
@@ -12,8 +9,10 @@ public class Detalle_Venta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer venta_id;
-    private Integer producto_id;
+    @ManyToOne
+    @JoinColumn(name = "venta_id", nullable = false)
+    private Venta venta;
+    private Integer pedido_id;
     private Integer cantidad;
     private BigDecimal precio_unitario;
     private BigDecimal total;
@@ -26,20 +25,20 @@ public class Detalle_Venta {
         this.id = id;
     }
 
-    public Integer getVenta_id() {
-        return venta_id;
+    public Venta getVenta() {
+        return venta;
     }
 
-    public void setVenta_id(Integer venta_id) {
-        this.venta_id = venta_id;
+    public void setVenta(Venta venta) {
+        this.venta = venta;
     }
 
-    public Integer getProducto_id() {
-        return producto_id;
+    public Integer getPedido_id() {
+        return pedido_id;
     }
 
-    public void setProducto_id(Integer producto_id) {
-        this.producto_id = producto_id;
+    public void setPedido_id(Integer pedido_id) {
+        this.pedido_id = pedido_id;
     }
 
     public Integer getCantidad() {
@@ -71,20 +70,20 @@ public class Detalle_Venta {
 
     @Override
     public String toString() {
-        return "VentaDetalle{" +
+        return "Detalle_Venta{" +
                 "id=" + id +
-                ", venta_id=" + venta_id +
-                ", producto_id=" + producto_id +
+                ", venta=" + venta +
+                ", pedido_id=" + pedido_id +
                 ", cantidad=" + cantidad +
                 ", precio_unitario=" + precio_unitario +
                 ", total=" + total +
                 '}';
     }
 
-    public Detalle_Venta(Integer id, Integer venta_id, Integer producto_id, Integer cantidad, BigDecimal precio_unitario, BigDecimal total) {
+    public Detalle_Venta(Integer id, Venta venta, Integer pedido_id, Integer cantidad, BigDecimal precio_unitario, BigDecimal total) {
         this.id = id;
-        this.venta_id = venta_id;
-        this.producto_id = producto_id;
+        this.venta = venta;
+        this.pedido_id = pedido_id;
         this.cantidad = cantidad;
         this.precio_unitario = precio_unitario;
         this.total = total;
