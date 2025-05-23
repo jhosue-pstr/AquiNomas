@@ -9,6 +9,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface ProveedorClient {
 
     @GetMapping("/proveedores/{id}")
-    ProveedorDto getProveedorById(@PathVariable("id") Integer id);  // ID de proveedor como Integer
+    ProveedorDto getProveedorById(@PathVariable("id") Integer id);
 }
-

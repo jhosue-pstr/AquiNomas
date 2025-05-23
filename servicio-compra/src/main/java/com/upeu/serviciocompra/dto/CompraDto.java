@@ -12,4 +12,5 @@ public class CompraDto {
     private BigDecimal total;
     private Timestamp fechaCompra;
     private List<DetalleCompraDto> detalles;
+    private ProveedorDto proveedor;  // Agregado para poder setear proveedor completo en el DTO
 }
