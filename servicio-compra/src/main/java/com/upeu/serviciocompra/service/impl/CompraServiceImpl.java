@@ -11,6 +11,7 @@ import com.upeu.serviciocompra.service.CompraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,7 +31,14 @@ public class CompraServiceImpl implements CompraService {
     @Override
     public Compra crearCompra(CompraDto compraDto) {
         Compra compra = new Compra();
-        compra.setFechaCompra(compraDto.getFechaCompra());
+
+        // Si no se proporciona fecha, usar fecha actual
+        if (compraDto.getFechaCompra() == null) {
+            compra.setFechaCompra(new Timestamp(System.currentTimeMillis()));
+        } else {
+            compra.setFechaCompra(compraDto.getFechaCompra());
+        }
+
         compra.setTotal(compraDto.getTotal());
         compra.setProveedorId(compraDto.getProveedorId());
 
@@ -47,6 +55,12 @@ public class CompraServiceImpl implements CompraService {
                 return d;
             }).collect(Collectors.toList());
             detalleCompraRepository.saveAll(detalles);
+        }
+
+        try {
+            compraGuardada.setProveedor(proveedorClient.getProveedorById(compraDto.getProveedorId()));
+        } catch (Exception e) {
+            compraGuardada.setProveedor(null);
         }
 
         return compraGuardada;
