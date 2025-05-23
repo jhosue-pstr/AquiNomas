@@ -46,4 +46,9 @@ resilience4j:
         waitDurationInOpenState: 5s
         failureRateThreshold: 50
         eventConsumerBufferSize: 10
+logging:
+  level:
+    com.upeu.serviciocompra.feign: DEBUG
+    org.springframework.cloud.openfeign: DEBUG
+    org.apache.http: DEBUG
 
