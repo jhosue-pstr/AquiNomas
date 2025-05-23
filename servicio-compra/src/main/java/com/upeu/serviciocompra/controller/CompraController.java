@@ -15,7 +15,7 @@ public class CompraController {
     @Autowired
     private CompraService compraService;
 
-    @PostMapping
+    @PostMapping("/solicitud")
     public Compra crearCompra(@RequestBody CompraDto compraDto) {
         return compraService.crearCompra(compraDto);
     }
@@ -38,5 +38,15 @@ public class CompraController {
     @DeleteMapping("/{id}")
     public void eliminarCompra(@PathVariable Integer id) {
         compraService.eliminarCompra(id);
+    }
+
+    @PutMapping("/{id}/validar")
+    public Compra validarCompra(@PathVariable Integer id) {
+        return compraService.validarCompra(id);
+    }
+
+    @GetMapping("/{id}/orden")
+    public CompraDto generarOrdenCompra(@PathVariable Integer id) {
+        return compraService.generarOrdenCompra(id);
     }
 }
