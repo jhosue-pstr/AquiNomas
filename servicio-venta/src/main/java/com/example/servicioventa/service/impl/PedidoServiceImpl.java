@@ -29,19 +29,25 @@ public class PedidoServiceImpl {
             String baseUrl = serviceInstance.getUri().toString();
             String url = baseUrl + "/pedidos/" + pedido_id;
 
-            return restTemplate.getForObject(url, Pedido.class);
+            try {
+                return restTemplate.getForObject(url, Pedido.class);
+            } catch (Exception e) {
+                throw new RuntimeException("Error al obtener pedido con ID " + pedido_id + ": " + e.getMessage());
+            }
         }
 
+        // La excepción se lanza si `serviceInstance` es NULL
         throw new RuntimeException("No se encontraron instancias de servicio-pedido en Eureka.");
     }
 
-    //  Metodo Fallback cuando el servicio no está disponible
+    // Metodo Fallback cuando el servicio no está disponible
     public Pedido fallbackObtenerPedidoPorId(Integer pedido_id, Throwable t) {
         Pedido pedido = new Pedido();
         pedido.setId(pedido_id);
-        pedido.setEstado("No disponible"); // Mensaje indicando que el servicio falló
+        pedido.setEstado("Información no disponible"); // Mensaje más claro
         return pedido;
     }
+
 
 //    public Pedido obtenerPedidoPorId(Integer pedido_id) {
 //        ServiceInstance serviceInstance = loadBalancerClient.choose("servicio-pedido");

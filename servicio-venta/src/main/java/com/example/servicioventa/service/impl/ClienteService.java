@@ -1,6 +1,7 @@
 package com.example.servicioventa.service.impl;
 
 import com.example.servicioventa.dto.Cliente;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
@@ -20,6 +21,7 @@ public class ClienteService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @CircuitBreaker(name = "clienteCircuitBreaker", fallbackMethod = "fallbackObtenerClientePorId")
     public Cliente obtenerClientePorId(Integer cliente_id) {
         ServiceInstance serviceInstance = loadBalancerClient.choose("servicio-cliente");
 
@@ -34,10 +36,21 @@ public class ClienteService {
             }
         }
 
-        throw new RuntimeException("No se encontraron instancias del servicio servicio-cliente en Eureka.");
+        throw new RuntimeException("No se encontraron instancias de servicio-cliente en Eureka.");
     }
 
-    // 🔥 Método necesario para el seeder
+    // Metodo Fallback cuando el servicio no está disponible
+    public Cliente fallbackObtenerClientePorId(Integer cliente_id, Throwable t) {
+        System.out.println("El servicio cliente no está disponible. Devolviendo datos vacíos.");
+
+        Cliente cliente = new Cliente();
+        cliente.setId(cliente_id);
+        cliente.setNombre("Información no disponible");
+        cliente.setDireccion("Información no disponible");
+        return cliente;
+    }
+
+    // Metodo necesario para el seeder
     public List<Integer> getAllClienteIds() {
         ServiceInstance serviceInstance = loadBalancerClient.choose("servicio-cliente");
 
