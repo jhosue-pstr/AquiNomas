@@ -39,6 +39,7 @@ resilience4j:
     instances:
 #      clienteListarPorIdCB:
       clienteCircuitBreaker:
+        recordFailurePredicate: io.github.resilience4j.circuitbreaker.predicates.RecordFailurePredicate
         registerHealthIndicator: true
         slidingWindowSize: 10
         permittedNumberOfCallsInHalfOpenState: 3
@@ -49,6 +50,7 @@ resilience4j:
         eventConsumerBufferSize: 10
 
       pedidoCircuitBreaker:
+        recordFailurePredicate: io.github.resilience4j.circuitbreaker.predicates.RecordFailurePredicate
         registerHealthIndicator: true
         slidingWindowSize: 10
         permittedNumberOfCallsInHalfOpenState: 3

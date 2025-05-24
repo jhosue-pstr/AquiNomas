@@ -2,6 +2,7 @@ package com.example.servicioventa.service.impl;
 
 import com.example.servicioventa.dto.Detalle_pedido;
 import com.example.servicioventa.dto.Pedido;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
@@ -20,6 +21,7 @@ public class PedidoServiceImpl {
     @Autowired
     private RestTemplate restTemplate;
 
+    @CircuitBreaker(name = "pedidoCircuitBreaker", fallbackMethod = "fallbackObtenerPedidoPorId")
     public Pedido obtenerPedidoPorId(Integer pedido_id) {
         ServiceInstance serviceInstance = loadBalancerClient.choose("servicio-pedido");
 
@@ -27,15 +29,36 @@ public class PedidoServiceImpl {
             String baseUrl = serviceInstance.getUri().toString();
             String url = baseUrl + "/pedidos/" + pedido_id;
 
-            try {
-                return restTemplate.getForObject(url, Pedido.class);
-            } catch (Exception e) {
-                throw new RuntimeException("Error al obtener pedido con ID " + pedido_id + ": " + e.getMessage());
-            }
+            return restTemplate.getForObject(url, Pedido.class);
         }
 
-        throw new RuntimeException("No se encontraron instancias del servicio servicio-pedido en Eureka.");
+        throw new RuntimeException("No se encontraron instancias de servicio-pedido en Eureka.");
     }
+
+    //  Metodo Fallback cuando el servicio no está disponible
+    public Pedido fallbackObtenerPedidoPorId(Integer pedido_id, Throwable t) {
+        Pedido pedido = new Pedido();
+        pedido.setId(pedido_id);
+        pedido.setEstado("No disponible"); // Mensaje indicando que el servicio falló
+        return pedido;
+    }
+
+//    public Pedido obtenerPedidoPorId(Integer pedido_id) {
+//        ServiceInstance serviceInstance = loadBalancerClient.choose("servicio-pedido");
+//
+//        if (serviceInstance != null) {
+//            String baseUrl = serviceInstance.getUri().toString();
+//            String url = baseUrl + "/pedidos/" + pedido_id;
+//
+//            try {
+//                return restTemplate.getForObject(url, Pedido.class);
+//            } catch (Exception e) {
+//                throw new RuntimeException("Error al obtener pedido con ID " + pedido_id + ": " + e.getMessage());
+//            }
+//        }
+//
+//        throw new RuntimeException("No se encontraron instancias del servicio servicio-pedido en Eureka.");
+//    }
 
     public List<Detalle_pedido> obtenerDetallesPorPedidoId(Integer pedido_id) {
         ServiceInstance serviceInstance = loadBalancerClient.choose("servicio-pedido");
