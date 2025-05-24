@@ -1,5 +1,6 @@
 package com.example.servicioventa.controller;
 
+import com.example.servicioventa.entity.Detalle_Venta;
 import com.example.servicioventa.entity.Venta;
 import com.example.servicioventa.service.VentaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +38,13 @@ public class VentaController {
     }
 
     @PostMapping
-    public ResponseEntity<Venta> crearVenta(@RequestBody Venta venta) {
+    public ResponseEntity<Venta> crearVenta(@RequestBody Venta venta, @RequestBody List<Detalle_Venta> detallesVenta) {
         if (venta.getTotal().compareTo(BigDecimal.ZERO) <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El total debe ser mayor a cero.");
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(ventaService.guardar(venta));
+        return ResponseEntity.status(HttpStatus.CREATED).body(ventaService.guardarVenta(venta, detallesVenta));
     }
+
 
     @PutMapping("/{id}")
     public Venta actualizarVenta(@PathVariable Integer id, @RequestBody Venta venta) {
