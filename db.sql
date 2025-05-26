@@ -105,8 +105,6 @@ CREATE TABLE producto (
     categoria_id INT,
     descripcion TEXT,
     precio DECIMAL(10, 2),
-    stock INT DEFAULT 0,
-    stock_minimo INT DEFAULT 10,
     FOREIGN KEY (categoria_id) REFERENCES categoria(id)
 );
 
