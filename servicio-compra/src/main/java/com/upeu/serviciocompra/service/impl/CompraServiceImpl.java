@@ -109,10 +109,20 @@ public class CompraServiceImpl implements CompraService {
             compra.setFechaCompra(compraDto.getFechaCompra());
             compra.setTotal(compraDto.getTotal());
             compra.setProveedorId(compraDto.getProveedorId());
-            return compraRepository.save(compra);
+
+            Compra compraActualizada = compraRepository.save(compra);
+
+            try {
+                compraActualizada.setProveedor(proveedorClient.getProveedorById(compraActualizada.getProveedorId()));
+            } catch (Exception e) {
+                compraActualizada.setProveedor(null);
+            }
+
+            return compraActualizada;
         }
         return null;
     }
+
 
     @Override
     public void eliminarCompra(Integer id) {
@@ -124,10 +134,16 @@ public class CompraServiceImpl implements CompraService {
     public Compra validarCompra(Integer id) {
         Compra compra = compraRepository.findById(id).orElse(null);
         if (compra != null && compra.getTotal().compareTo(new java.math.BigDecimal("0")) > 0) {
+            try {
+                compra.setProveedor(proveedorClient.getProveedorById(compra.getProveedorId()));
+            } catch (Exception e) {
+                compra.setProveedor(null);
+            }
             return compra;
         }
         return null;
     }
+
 
     @Override
     public CompraDto generarOrdenCompra(Integer id) {
