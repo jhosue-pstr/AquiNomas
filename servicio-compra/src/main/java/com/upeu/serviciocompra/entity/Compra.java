@@ -1,7 +1,5 @@
 package com.upeu.serviciocompra.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.upeu.serviciocompra.dto.ProveedorDto;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -24,21 +22,15 @@ public class Compra {
     private Timestamp fechaCompra;
 
     @Transient
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private ProveedorDto proveedor;
+    private com.upeu.serviciocompra.dto.ProveedorDto proveedor;
 
-    // Constructor vacío
-    public Compra() {
-    }
+    public Compra() {}
 
-    // Constructor con parámetros
     public Compra(Integer proveedorId, BigDecimal total, Timestamp fechaCompra) {
         this.proveedorId = proveedorId;
         this.total = total;
         this.fechaCompra = fechaCompra;
     }
-
-    // Getters y Setters
 
     public Integer getId() {
         return id;
@@ -72,11 +64,11 @@ public class Compra {
         this.fechaCompra = fechaCompra;
     }
 
-    public ProveedorDto getProveedor() {
+    public com.upeu.serviciocompra.dto.ProveedorDto getProveedor() {
         return proveedor;
     }
 
-    public void setProveedor(ProveedorDto proveedor) {
+    public void setProveedor(com.upeu.serviciocompra.dto.ProveedorDto proveedor) {
         this.proveedor = proveedor;
     }
 

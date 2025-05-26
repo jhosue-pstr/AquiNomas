@@ -45,3 +45,4 @@ resilience4j:
         failureRateThreshold: 50
         eventConsumerBufferSize: 10
 
+

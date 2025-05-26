@@ -5,6 +5,7 @@ import com.upeu.serviciocompra.dto.DetalleCompraDto;
 import com.upeu.serviciocompra.entity.Compra;
 import com.upeu.serviciocompra.entity.DetalleCompra;
 import com.upeu.serviciocompra.feign.ProveedorClient;
+import com.upeu.serviciocompra.dto.ProveedorDto;
 import com.upeu.serviciocompra.repository.CompraRepository;
 import com.upeu.serviciocompra.repository.DetalleCompraRepository;
 import com.upeu.serviciocompra.service.CompraService;
@@ -32,7 +33,6 @@ public class CompraServiceImpl implements CompraService {
     public Compra crearCompra(CompraDto compraDto) {
         Compra compra = new Compra();
 
-        // Si no se proporciona fecha, usar fecha actual
         if (compraDto.getFechaCompra() == null) {
             compra.setFechaCompra(new Timestamp(System.currentTimeMillis()));
         } else {
@@ -58,10 +58,15 @@ public class CompraServiceImpl implements CompraService {
         }
 
         try {
-            compraGuardada.setProveedor(proveedorClient.getProveedorById(compraDto.getProveedorId()));
+            System.out.println("Consultando proveedor con ID: " + compraDto.getProveedorId());
+            ProveedorDto proveedor = proveedorClient.getProveedorById(compraDto.getProveedorId());
+            System.out.println("Proveedor obtenido: " + proveedor);
+            compraGuardada.setProveedor(proveedor);
         } catch (Exception e) {
+            System.out.println("Error al consultar proveedor: " + e.getMessage());
             compraGuardada.setProveedor(null);
         }
+
 
         return compraGuardada;
     }
@@ -71,8 +76,10 @@ public class CompraServiceImpl implements CompraService {
         List<Compra> compras = compraRepository.findAll();
         for (Compra compra : compras) {
             try {
-                compra.setProveedor(proveedorClient.getProveedorById(compra.getProveedorId()));
+                ProveedorDto proveedor = proveedorClient.getProveedorById(compra.getProveedorId());
+                compra.setProveedor(proveedor);
             } catch (Exception e) {
+                System.out.println("Error al obtener proveedor para compra ID " + compra.getId() + ": " + e.getMessage());
                 compra.setProveedor(null);
             }
         }
@@ -84,8 +91,10 @@ public class CompraServiceImpl implements CompraService {
         Optional<Compra> compra = compraRepository.findById(id);
         compra.ifPresent(c -> {
             try {
-                c.setProveedor(proveedorClient.getProveedorById(c.getProveedorId()));
+                ProveedorDto proveedor = proveedorClient.getProveedorById(c.getProveedorId());
+                c.setProveedor(proveedor);
             } catch (Exception e) {
+                System.out.println("Error al obtener proveedor para compra ID " + id + ": " + e.getMessage());
                 c.setProveedor(null);
             }
         });
@@ -100,10 +109,20 @@ public class CompraServiceImpl implements CompraService {
             compra.setFechaCompra(compraDto.getFechaCompra());
             compra.setTotal(compraDto.getTotal());
             compra.setProveedorId(compraDto.getProveedorId());
-            return compraRepository.save(compra);
+
+            Compra compraActualizada = compraRepository.save(compra);
+
+            try {
+                compraActualizada.setProveedor(proveedorClient.getProveedorById(compraActualizada.getProveedorId()));
+            } catch (Exception e) {
+                compraActualizada.setProveedor(null);
+            }
+
+            return compraActualizada;
         }
         return null;
     }
+
 
     @Override
     public void eliminarCompra(Integer id) {
@@ -115,10 +134,16 @@ public class CompraServiceImpl implements CompraService {
     public Compra validarCompra(Integer id) {
         Compra compra = compraRepository.findById(id).orElse(null);
         if (compra != null && compra.getTotal().compareTo(new java.math.BigDecimal("0")) > 0) {
+            try {
+                compra.setProveedor(proveedorClient.getProveedorById(compra.getProveedorId()));
+            } catch (Exception e) {
+                compra.setProveedor(null);
+            }
             return compra;
         }
         return null;
     }
+
 
     @Override
     public CompraDto generarOrdenCompra(Integer id) {
@@ -132,6 +157,7 @@ public class CompraServiceImpl implements CompraService {
         dto.setProveedorId(compra.getProveedorId());
         dto.setFechaCompra(compra.getFechaCompra());
         dto.setTotal(compra.getTotal());
+        dto.setProveedor(compra.getProveedor());
 
         List<DetalleCompraDto> detalleDtos = detalles.stream().map(det -> {
             DetalleCompraDto d = new DetalleCompraDto();
