@@ -58,14 +58,15 @@ public class CompraServiceImpl implements CompraService {
         }
 
         try {
-            System.out.println("Llamando a proveedor con ID: " + compraDto.getProveedorId());
+            System.out.println("Consultando proveedor con ID: " + compraDto.getProveedorId());
             ProveedorDto proveedor = proveedorClient.getProveedorById(compraDto.getProveedorId());
-            System.out.println("Proveedor recibido: " + proveedor);
+            System.out.println("Proveedor obtenido: " + proveedor);
             compraGuardada.setProveedor(proveedor);
         } catch (Exception e) {
-            System.out.println("Error al obtener proveedor: " + e.getMessage());
+            System.out.println("Error al consultar proveedor: " + e.getMessage());
             compraGuardada.setProveedor(null);
         }
+
 
         return compraGuardada;
     }
