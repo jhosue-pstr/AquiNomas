@@ -28,8 +28,6 @@ eureka:
     serviceUrl:
       #defaultZone: http://localhost:8090/eureka
       defaultZone: ${EUREKA_URI:http://localhost:8090/eureka}
-    register-with-eureka: false
-    fetch-registry: true
   instance:
     #hostname: localhost
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
@@ -46,9 +44,5 @@ resilience4j:
         waitDurationInOpenState: 5s
         failureRateThreshold: 50
         eventConsumerBufferSize: 10
-logging:
-  level:
-    com.upeu.serviciocompra.feign: DEBUG
-    org.springframework.cloud.openfeign: DEBUG
-    org.apache.http: DEBUG
+
 
