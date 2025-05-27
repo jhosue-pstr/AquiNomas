@@ -80,4 +80,6 @@ public class Venta {
         this.total = total;
         this.estado = estado;
     }
+
+    // XD
 }
