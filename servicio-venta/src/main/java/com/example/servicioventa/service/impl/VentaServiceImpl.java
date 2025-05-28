@@ -6,9 +6,13 @@ import com.example.servicioventa.entity.Venta;
 import com.example.servicioventa.repository.VentaDetalleRepository;
 import com.example.servicioventa.repository.VentaRepository;
 import com.example.servicioventa.service.VentaService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,35 +28,51 @@ public class VentaServiceImpl implements VentaService {
     private PedidoServiceImpl pedidoService; // Servicio para obtener pedidos dinámicamente
 
     @Override
-    public Venta guardarVenta(Venta venta, List<Detalle_Venta> detallesVenta) {
-        for (Detalle_Venta detalle : detallesVenta) {
-            Pedido pedido = pedidoService.obtenerPedidoPorId(detalle.getPedido_id());
+   //@Transactional
+   public Venta guardarVenta(Venta venta, List<Detalle_Venta> detallesVenta) {
+       BigDecimal totalVenta = BigDecimal.ZERO;
 
-            if (pedido == null) {
-                throw new IllegalArgumentException("Pedido con ID " + detalle.getPedido_id() + " no encontrado.");
-            }
+       for (Detalle_Venta detalle : detallesVenta) {
+           Pedido pedido = pedidoService.obtenerPedidoPorId(detalle.getPedido_id());
 
-            if ("pendiente".equalsIgnoreCase(pedido.getEstado())) {
-                throw new IllegalStateException("No se puede realizar la venta, el pedido aún está pendiente.");
-            }
+           if (pedido == null) {
+               throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido con ID " + detalle.getPedido_id() + " no encontrado.");
+           }
 
-            if (!pedido.getCliente_id().equals(venta.getCliente_id())) {
-                throw new IllegalArgumentException("El cliente del pedido no coincide con el cliente de la venta.");
-            }
-        }
+           if ("pendiente".equalsIgnoreCase(pedido.getEstado())) {
+               throw new ResponseStatusException(HttpStatus.CONFLICT, "No se puede realizar la venta, el pedido aún está pendiente.");
+           }
 
-        // Si pasa todas las validaciones, guardamos la venta y sus detalles
-        Venta ventaGuardada = ventaRepository.save(venta);
-        detallesVenta.forEach(detalle -> detalle.setVenta(ventaGuardada));
-        detalleVentaRepository.saveAll(detallesVenta);
+           if (!pedido.getCliente_id().equals(venta.getCliente_id())) {
+               throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El cliente del pedido no coincide con el cliente de la venta.");
+           }
 
-        return ventaGuardada;
-    }
+           // Calcular total de cada detalle de venta
+           detalle.setTotal(detalle.getPrecio_unitario().multiply(BigDecimal.valueOf(detalle.getCantidad())));
 
+           // Acumular el total de la venta
+           totalVenta = totalVenta.add(detalle.getTotal());
+       }
+
+       // Validación del total de la venta antes de guardar
+       if (totalVenta.compareTo(BigDecimal.ZERO) <= 0) {
+           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El total de la venta debe ser mayor a cero.");
+       }
+
+       venta.setTotal(totalVenta);
+       Venta ventaGuardada = ventaRepository.save(venta);
+
+       detallesVenta.forEach(detalle -> detalle.setVenta(ventaGuardada));
+       detalleVentaRepository.saveAll(detallesVenta);
+
+       return ventaGuardada;
+   }
 
     @Override
     public List<Venta> listar() {
-        return ventaRepository.findAll();
+        List<Venta> ventas = ventaRepository.findAll();
+        System.out.println("🔍 Ventas encontradas: " + ventas.size());
+        return ventas;
     }
 
     @Override
@@ -67,9 +87,8 @@ public class VentaServiceImpl implements VentaService {
 
     @Override
     public void eliminarPorId(Integer id) {
-        if (!ventaRepository.existsById(id)) {
-            throw new RuntimeException("Venta no encontrada con ID: " + id);
-        }
-        ventaRepository.deleteById(id);
+        Venta venta = ventaRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Venta no encontrada con ID: " + id));
+        ventaRepository.delete(venta);
     }
 }

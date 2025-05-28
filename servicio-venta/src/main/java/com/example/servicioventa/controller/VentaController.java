@@ -32,19 +32,25 @@ public class VentaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Venta> obtenerVentaPorId(@PathVariable Integer id) {
+        System.out.println("🔍 Buscando venta con ID: " + id);
         return ventaService.listarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Venta no encontrada"));
     }
 
+
     @PostMapping
-    public ResponseEntity<Venta> crearVenta(@RequestBody Venta venta, @RequestBody List<Detalle_Venta> detallesVenta) {
+    public ResponseEntity<Venta> crearVenta(@RequestBody Venta venta) {
         if (venta.getTotal().compareTo(BigDecimal.ZERO) <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El total debe ser mayor a cero.");
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(ventaService.guardarVenta(venta, detallesVenta));
-    }
 
+        if (venta.getDetallesVenta() == null || venta.getDetallesVenta().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Debe agregar al menos un detalle de venta.");
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(ventaService.guardarVenta(venta, venta.getDetallesVenta()));
+    }
 
     @PutMapping("/{id}")
     public Venta actualizarVenta(@PathVariable Integer id, @RequestBody Venta venta) {

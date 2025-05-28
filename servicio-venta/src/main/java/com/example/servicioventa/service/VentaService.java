@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface VentaService {
-    List<Venta> listar();
-    Venta guardarVenta(Venta venta, List<Detalle_Venta> detallesVenta);
-    Venta actualizar(Venta venta);
-    Optional<Venta> listarPorId(Integer id);
-    void eliminarPorId(Integer id);
+    public List<Venta> listar();
+    public Venta guardarVenta(Venta venta, List<Detalle_Venta> detallesVenta);
+    public Venta actualizar(Venta venta);
+    public Optional<Venta> listarPorId(Integer id);
+    public void eliminarPorId(Integer id);
 }

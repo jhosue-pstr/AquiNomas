@@ -41,7 +41,7 @@ public class ClienteService {
 
     // Metodo Fallback cuando el servicio no está disponible
     public Cliente fallbackObtenerClientePorId(Integer cliente_id, Throwable t) {
-        System.out.println("El servicio cliente no está disponible. Devolviendo datos vacíos.");
+        System.out.println("⚠️ Fallback activado - Cliente ID: " + cliente_id + " - Causa: " + t.getMessage());
 
         Cliente cliente = new Cliente();
         cliente.setId(cliente_id);

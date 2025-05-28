@@ -5,8 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5b4de488-234a-4802-b711-2acbc00895dc" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/servicio-gateway.yml" beforeDir="false" afterPath="$PROJECT_DIR$/servicio-gateway.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/controller/VentaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/controller/VentaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/entity/Comprobante_pago.java" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/entity/Comprobante_pago.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/entity/Detalle_Venta.java" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/entity/Detalle_Venta.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/entity/Venta.java" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/entity/Venta.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/service/VentaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/service/VentaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/service/impl/ClienteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/service/impl/ClienteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/service/impl/ComprobantePagoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/service/impl/ComprobantePagoServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/service/impl/VentaServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/service/impl/VentaServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/util/DataSeeder.java" beforeDir="false" afterPath="$PROJECT_DIR$/../servicio-venta/src/main/java/com/example/servicioventa/util/DataSeeder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,7 +23,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
@@ -24,21 +33,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;nelson&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/NELSON/Documents/Programacion/AquiNomas/servicio-cliente&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/NELSON/Documents/Programacion/AquiNomas/servicio-cliente",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\UPEU.2025 5to ciclo\AquiNomas\AquiNomas\config-data" />
@@ -68,6 +77,7 @@
       <workItem from="1747338755173" duration="111000" />
       <workItem from="1747702860324" duration="595000" />
       <workItem from="1747703641162" duration="2433000" />
+      <workItem from="1748392702439" duration="2496000" />
     </task>
     <servers />
   </component>

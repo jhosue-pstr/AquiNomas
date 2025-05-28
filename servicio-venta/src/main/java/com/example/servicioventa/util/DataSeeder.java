@@ -12,9 +12,13 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
+
 @Component
 public class DataSeeder implements CommandLineRunner {
+
     @Autowired
     private VentaRepository ventaRepository;
 
@@ -25,44 +29,79 @@ public class DataSeeder implements CommandLineRunner {
     private ComprobantePagoRepository comprobantePagoRepository;
 
     @Override
-    public void run(String... args) throws Exception {
-        if (ventaRepository.count() == 0) {
-            List<Venta> ventas = seedVentas();
-            seedVentaDetalles(ventas);
-        }
+    public void run(String... args) {
+        System.out.println("🔄 Iniciando Seeder...");
 
-        if (comprobantePagoRepository.count() == 0) {
-            seedComprobantes();
+        if (ventaRepository.count() < 5) {
+            List<Venta> ventas = seedVentas(); // Generar nuevas ventas hasta completar 5
+            seedVentaDetalles(ventas); // Luego detalles de venta
+            seedComprobantes(ventas); // Finalmente comprobantes
+        } else {
+            System.out.println("⚠️ Ya hay suficientes ventas, no se generarán nuevos registros.");
         }
     }
 
     private List<Venta> seedVentas() {
-        Venta venta1 = new Venta(null, 1, LocalDateTime.now(), new BigDecimal("250.00"), "Pagado");
-        Venta venta2 = new Venta(null, 2, LocalDateTime.now(), new BigDecimal("500.00"), "Pendiente");
+        long ventasExistentes = ventaRepository.count();
+        int ventasFaltantes = (int) (5 - ventasExistentes);
+        List<Venta> nuevasVentas = new ArrayList<>();
 
-        List<Venta> ventasGuardadas = ventaRepository.saveAll(List.of(venta1, venta2));
-        System.out.println("✅ Seeded Ventas");
+        for (int i = 1; i <= ventasFaltantes; i++) {
+            Venta venta = new Venta(null, i, List.of(), LocalDateTime.now(),
+                    new BigDecimal((i + 1) * 100), "Pendiente");
+            nuevasVentas.add(venta);
+        }
 
-        return ventasGuardadas; // Devuelve las ventas guardadas con sus IDs generados
+        List<Venta> ventasGuardadas = ventaRepository.saveAll(nuevasVentas);
+        System.out.println("✅ Ventas creadas dinámicamente: " + ventasGuardadas.size());
+
+        return ventasGuardadas;
     }
 
     private void seedVentaDetalles(List<Venta> ventas) {
-        if (!ventas.isEmpty()) {
-            Detalle_Venta detalle1 = new Detalle_Venta(null, ventas.get(0), 101, 2, new BigDecimal("50.00"), new BigDecimal("100.00"));
-            Detalle_Venta detalle2 = new Detalle_Venta(null, ventas.get(1), 102, 3, new BigDecimal("70.00"), new BigDecimal("210.00"));
+        long detallesExistentes = ventaDetalleRepository.count();
+        int detallesFaltantes = (int) (5 - detallesExistentes);
 
-            ventaDetalleRepository.saveAll(List.of(detalle1, detalle2));
-            System.out.println("✅ Seeded VentaDetalles");
+        if (!ventas.isEmpty() && detallesFaltantes > 0) {
+            List<Detalle_Venta> nuevosDetalles = new ArrayList<>();
+
+            for (int i = 0; i < detallesFaltantes; i++) {
+                Detalle_Venta detalle = new Detalle_Venta(null, ventas.get(i % ventas.size()),
+                        i + 1, 2 + i, new BigDecimal("50.00"), new BigDecimal("100.00"));
+                nuevosDetalles.add(detalle);
+            }
+
+            ventaDetalleRepository.saveAll(nuevosDetalles);
+            System.out.println("✅ Detalles de venta creados dinámicamente: " + nuevosDetalles.size());
         } else {
-            System.out.println("⚠️ No se insertaron detalles porque no hay ventas.");
+            System.out.println("⚠️ Ya hay suficientes detalles de venta.");
         }
     }
 
-    private void seedComprobantes() {
-        Comprobante_pago comprobante1 = new Comprobante_pago(null, "Factura", "ABC123", "001-0001", LocalDateTime.now(), 1, "Juan Pérez", "12345678901", "Av. Central 123", new BigDecimal("250.00"), new BigDecimal("45.00"), new BigDecimal("205.00"), "Pagado");
-        Comprobante_pago comprobante2 = new Comprobante_pago(null, "Boleta", "XYZ456", "002-0002", LocalDateTime.now(), 2, "María López", null, null, new BigDecimal("500.00"), null, new BigDecimal("500.00"), "Pendiente");
+    private void seedComprobantes(List<Venta> ventas) {
+        long comprobantesExistentes = comprobantePagoRepository.count();
+        int comprobantesFaltantes = (int) (5 - comprobantesExistentes);
 
-        comprobantePagoRepository.saveAll(List.of(comprobante1, comprobante2));
-        System.out.println("✅ Seeded Comprobantes");
+        if (!ventas.isEmpty() && comprobantesFaltantes > 0) {
+            List<Comprobante_pago> nuevosComprobantes = new ArrayList<>();
+
+            for (int i = 0; i < comprobantesFaltantes; i++) {
+                Venta venta = ventas.get(i % ventas.size());
+
+                BigDecimal igvVenta = venta.getTotal().multiply(BigDecimal.valueOf(0.18));
+
+                Comprobante_pago comprobante = new Comprobante_pago(null, venta, "Factura", "XYZ" + i,
+                        "002-00" + i, LocalDateTime.now(), null, "Cliente " + (i + 1),
+                        "1234567890" + i, "Dirección " + (i + 1), venta.getTotal(),
+                        igvVenta, venta.getTotal().subtract(igvVenta), "Efectivo", "Pagado");
+
+                nuevosComprobantes.add(comprobante);
+            }
+
+            comprobantePagoRepository.saveAll(nuevosComprobantes);
+            System.out.println("✅ Comprobantes creados dinámicamente: " + nuevosComprobantes.size());
+        } else {
+            System.out.println("⚠️ Ya hay suficientes comprobantes.");
+        }
     }
 }

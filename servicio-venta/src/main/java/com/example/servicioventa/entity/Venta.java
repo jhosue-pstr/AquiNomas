@@ -1,23 +1,27 @@
 package com.example.servicioventa.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Venta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(nullable = false)
     private Integer cliente_id;
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Detalle_Venta> detallesVenta;
+    @Column(nullable = false)
     private LocalDateTime fecha_venta;
+    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal total;
-    private String estado;
+    @Column(nullable = false, length = 50)
+    private String estado; // Pendiente, Pagado, Anulado
 
     public Integer getId() {
         return id;
@@ -33,6 +37,14 @@ public class Venta {
 
     public void setCliente_id(Integer cliente_id) {
         this.cliente_id = cliente_id;
+    }
+
+    public List<Detalle_Venta> getDetallesVenta() {
+        return detallesVenta;
+    }
+
+    public void setDetallesVenta(List<Detalle_Venta> detallesVenta) {
+        this.detallesVenta = detallesVenta;
     }
 
     public LocalDateTime getFecha_venta() {
@@ -67,15 +79,17 @@ public class Venta {
         return "Venta{" +
                 "id=" + id +
                 ", cliente_id=" + cliente_id +
+                ", detallesVenta=" + detallesVenta +
                 ", fecha_venta=" + fecha_venta +
                 ", total=" + total +
                 ", estado='" + estado + '\'' +
                 '}';
     }
 
-    public Venta(Integer id, Integer cliente_id, LocalDateTime fecha_venta, BigDecimal total, String estado) {
+    public Venta(Integer id, Integer cliente_id, List<Detalle_Venta> detallesVenta, LocalDateTime fecha_venta, BigDecimal total, String estado) {
         this.id = id;
         this.cliente_id = cliente_id;
+        this.detallesVenta = detallesVenta;
         this.fecha_venta = fecha_venta;
         this.total = total;
         this.estado = estado;

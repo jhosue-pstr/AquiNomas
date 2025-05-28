@@ -13,6 +13,10 @@ public class Comprobante_pago {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @ManyToOne
+    @JoinColumn(name = "venta_id", nullable = false)
+    private Venta venta;
+
     @Column(nullable = false)
     private String tipo; // "Boleta" o "Factura"
 
@@ -39,11 +43,14 @@ public class Comprobante_pago {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal total;
 
-    @Column(precision = 10, scale = 2)
-    private BigDecimal igv; // Se usa en Factura
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal igv = BigDecimal.ZERO;
 
-    @Column(precision = 10, scale = 2)
-    private BigDecimal montoNeto; // Total sin IGV (Se usa en Factura)
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal montoNeto = BigDecimal.ZERO; // Total sin IGV
+
+    @Column(nullable = false)
+    private String metodoPago;
 
     @Column(nullable = false, length = 50)
     private String estado; // Pendiente, Pagado, Anulado
@@ -54,6 +61,14 @@ public class Comprobante_pago {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Venta getVenta() {
+        return venta;
+    }
+
+    public void setVenta(Venta venta) {
+        this.venta = venta;
     }
 
     public String getTipo() {
@@ -144,6 +159,14 @@ public class Comprobante_pago {
         this.montoNeto = montoNeto;
     }
 
+    public String getMetodoPago() {
+        return metodoPago;
+    }
+
+    public void setMetodoPago(String metodoPago) {
+        this.metodoPago = metodoPago;
+    }
+
     public String getEstado() {
         return estado;
     }
@@ -159,6 +182,7 @@ public class Comprobante_pago {
     public String toString() {
         return "Comprobante_pago{" +
                 "id=" + id +
+                ", venta=" + venta +
                 ", tipo='" + tipo + '\'' +
                 ", numeroSerie='" + numeroSerie + '\'' +
                 ", numeroComprobante='" + numeroComprobante + '\'' +
@@ -170,12 +194,14 @@ public class Comprobante_pago {
                 ", total=" + total +
                 ", igv=" + igv +
                 ", montoNeto=" + montoNeto +
+                ", metodoPago='" + metodoPago + '\'' +
                 ", estado='" + estado + '\'' +
                 '}';
     }
 
-    public Comprobante_pago(Integer id, String tipo, String numeroSerie, String numeroComprobante, LocalDateTime fechaEmision, Integer cliente_id, String nombreCliente, String rucCliente, String direccionCliente, BigDecimal total, BigDecimal igv, BigDecimal montoNeto, String estado) {
+    public Comprobante_pago(Integer id, Venta venta, String tipo, String numeroSerie, String numeroComprobante, LocalDateTime fechaEmision, Integer cliente_id, String nombreCliente, String rucCliente, String direccionCliente, BigDecimal total, BigDecimal igv, BigDecimal montoNeto, String metodoPago, String estado) {
         this.id = id;
+        this.venta = venta;
         this.tipo = tipo;
         this.numeroSerie = numeroSerie;
         this.numeroComprobante = numeroComprobante;
@@ -187,6 +213,7 @@ public class Comprobante_pago {
         this.total = total;
         this.igv = igv;
         this.montoNeto = montoNeto;
+        this.metodoPago = metodoPago;
         this.estado = estado;
     }
 }
