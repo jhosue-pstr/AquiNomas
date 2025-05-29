@@ -11,7 +11,6 @@ spring:
     gateway:
       discovery:
         locator:
-        Updated upstream
           enabled: true
       routes:
         #========servicio cliente=======#
@@ -25,9 +24,7 @@ spring:
           uri: lb://servicio-compra
           predicates:
             - Path=/compras/**
-        #========servicio producto=======#
 
-      routes:
 
         #===========servicio inventario==========#
         - id: servicio-inventario
@@ -43,7 +40,7 @@ spring:
         - id: servicio-producto
           uri: lb://servicio-producto
           predicates:
-            - Path=/categorias/**, /productos/**
+            - Path=/categorias/**, /productos/**, /producto-disponible/**
 
 
         #========servicio pedido=======#
