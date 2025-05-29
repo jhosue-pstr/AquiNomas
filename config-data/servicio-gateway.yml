@@ -48,9 +48,18 @@ spring:
           uri: lb://servicio-pedido
           predicates:
             - Path=/pedido/**
-        #========servicio venta=======#
+          filters:
+            - AuthFilter
+
+          #========servicio venta=======#
 
         - id: servicio-venta
           uri: lb://servicio-venta
           predicates:
             - Path=/ventas/**, /ventasdetalle/**, /comprobantes/**
+
+        #========servicio auth=======#
+        - id: servicio-auth
+          uri: lb://servicio-auth
+          predicates:
+            - Path=/auth/**
