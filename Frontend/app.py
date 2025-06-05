@@ -1,15 +1,15 @@
+from flask import Flask, render_template, request  # Asegúrate de importar 'request'
+
 import pymysql
 pymysql.install_as_MySQLdb()  # Esto hace que SQLAlchemy use PyMySQL en lugar de MySQLdb.
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request  # Importa 'request'
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-# Cambiar la URI para usar PyMySQL como conector
+# Configuración de la base de datos
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/producto_db'
-
-# Instanciamos SQLAlchemy
 db = SQLAlchemy(app)
 
 # Modelo de Producto
@@ -29,11 +29,13 @@ class Categoria(db.Model):
 
 @app.route('/')
 def listar_productos():
-    # Consultamos todos los productos con la categoría asociada
-    productos = Producto.query.all()
+    # Paginación: Obtener los primeros 10 productos
+    page = request.args.get('page', 1, type=int)  # Si no se pasa un valor, la página predeterminada es 1
+    productos = Producto.query.paginate(page=page, per_page=10)  # 10 productos por página
 
     # Pasamos los productos a la plantilla HTML
     return render_template('index.html', productos=productos)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

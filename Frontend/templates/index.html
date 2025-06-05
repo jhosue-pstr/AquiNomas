@@ -57,6 +57,15 @@
                 </tbody>
             </table>
         </div>
+        <!-- Controles de paginación -->
+        <div class="pagination">
+            {% if productos.has_prev %}
+                <a class="btn btn-primary" href="{{ url_for('listar_productos', page=productos.prev_num) }}">Anterior</a>
+            {% endif %}
+            {% if productos.has_next %}
+                <a class="btn btn-primary" href="{{ url_for('listar_productos', page=productos.next_num) }}">Siguiente</a>
+            {% endif %}
+        </div>
     </div>
 
     <!-- Scripts de Bootstrap (incluyendo jQuery, Popper.js y Bootstrap JS) -->
