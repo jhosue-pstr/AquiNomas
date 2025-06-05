@@ -1,9 +1,4 @@
-from flask import Flask, render_template, request  # Asegúrate de importar 'request'
-
-import pymysql
-pymysql.install_as_MySQLdb()  # Esto hace que SQLAlchemy use PyMySQL en lugar de MySQLdb.
-
-from flask import Flask, render_template, request  # Importa 'request'
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -30,12 +25,45 @@ class Categoria(db.Model):
 @app.route('/')
 def listar_productos():
     # Paginación: Obtener los primeros 10 productos
-    page = request.args.get('page', 1, type=int)  # Si no se pasa un valor, la página predeterminada es 1
-    productos = Producto.query.paginate(page=page, per_page=10)  # 10 productos por página
+    page = request.args.get('page', 1, type=int)
+    productos = Producto.query.paginate(page=page, per_page=10)
 
     # Pasamos los productos a la plantilla HTML
     return render_template('index.html', productos=productos)
 
+# Ruta para editar un producto
+@app.route('/productos/<int:id>', methods=['PUT'])
+def editar_producto(id):
+    producto = Producto.query.get_or_404(id)  # Obtiene el producto por su ID
+
+    # Obtener los datos del cuerpo de la solicitud (JSON)
+    data = request.get_json()
+
+    if data:
+        producto.nombre = data.get('nombre', producto.nombre)
+        producto.categoria_id = data['categoria']['id']  # Tomamos el ID de la categoría desde el JSON
+        producto.descripcion = data.get('descripcion', producto.descripcion)
+        producto.precio = data.get('precio', producto.precio)
+
+        # Guardar cambios en la base de datos
+        db.session.commit()
+
+        # Retornar una respuesta exitosa
+        return jsonify({"message": "Producto actualizado exitosamente"}), 200
+
+    return jsonify({"message": "No se pudo actualizar el producto"}), 400
+
+
+@app.route('/eliminar/<int:id>', methods=['GET', 'POST'])
+def eliminar_producto(id):
+    producto = Producto.query.get_or_404(id)  # Obtiene el producto por su ID
+
+    # Eliminar el producto de la base de datos
+    db.session.delete(producto)
+    db.session.commit()
+
+    # Redirigir a la página principal después de eliminar
+    return redirect(url_for('listar_productos'))
 
 if __name__ == '__main__':
     app.run(debug=True)

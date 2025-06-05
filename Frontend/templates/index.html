@@ -52,6 +52,17 @@
                         <td>{{ producto.categoria.nombre }}</td>  <!-- Muestra el nombre de la categoría -->
                         <td>{{ producto.descripcion }}</td>
                         <td>{{ producto.precio }}</td>
+                            <td>
+            <!-- Botón de editar -->
+            <a class="btn btn-warning btn-sm" href="{{ url_for('editar_producto', id=producto.id) }}">EDITAR</a>
+            
+            <!-- Botón de eliminar -->
+            <a class="btn btn-danger btn-sm" href="{{ url_for('eliminar_producto', id=producto.id) }}" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?')">ELIMINAR</a>
+        </td>
+                    
+                    
+                    
+                    
                     </tr>
                     {% endfor %}
                 </tbody>

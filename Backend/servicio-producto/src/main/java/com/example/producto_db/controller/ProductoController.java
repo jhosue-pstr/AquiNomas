@@ -42,10 +42,13 @@ public class ProductoController {
         return productoService.guardar(producto);
     }
 
-    @PutMapping
-    public Producto actualizar(@RequestBody Producto producto) {
+    @PutMapping("/{id}")  // Usar {id} en la ruta
+    public Producto actualizar(@PathVariable Integer id, @RequestBody Producto producto) {
+        // Llamar al servicio para actualizar el producto con el ID
+        producto.setId(id);  // Asegúrate de que el ID del producto coincida
         return productoService.actualizar(producto);
     }
+
 
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Integer id) {
