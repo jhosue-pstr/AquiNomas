@@ -139,3 +139,10 @@ h1 {
         margin-left: 0;
     }
 }
+/* Aseguramos que ambos botones tengan el mismo tamaño de texto */
+.modal-footer .btn {
+    font-size: 1rem;  /* Tamaño de fuente más pequeño */
+    padding: 10px 20px; /* Botones más grandes si lo deseas */
+}
+
+
