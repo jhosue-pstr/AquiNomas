@@ -1,0 +1,120 @@
+/* main.css */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container-fluid {
+    margin-top: 50px;  /* Espaciado desde la parte superior */
+    width: 100%; /* La página ocupa todo el ancho */
+}
+
+.sidebar {
+    background-color: #343a40;
+    color: #fff;
+    padding: 20px;
+    position: fixed; /* La barra lateral se mantiene fija */
+    width: 280px; /* Aumenta el ancho de la barra lateral a 280px (ajústalo según lo necesites) */
+    height: 100vh; /* Ocupa el 100% de la altura de la pantalla */
+    top: 0; /* Asegura que la barra esté en la parte superior */
+    left: 0; /* Pegada al borde izquierdo */
+    border-radius: 0; /* Elimina el borde redondeado */
+    z-index: 999; /* Asegura que la barra lateral esté por encima de otros elementos */
+}
+
+.sidebar .profile img {
+    border: 3px solid #007bff;
+}
+
+.sidebar button {
+    margin-top: 10px;
+    padding: 12px;
+    font-size: 1rem;
+}
+
+.sidebar button:hover {
+    opacity: 0.8;
+}
+
+.main-content {
+    margin-left: 220px; /* Deja espacio para la barra lateral */
+    padding: 20px;
+    width: calc(100% - 220px); /* Asegura que el contenido ocupe el resto del espacio */
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.table {
+    width: 100%; /* La tabla ocupa todo el ancho */
+    table-layout: auto;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 15px; /* Aumenta el padding de las celdas */
+}
+
+.table th {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+
+.table-striped tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.table-responsive {
+    margin-top: 20px;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table td {
+    word-wrap: break-word; /* Asegura que el contenido largo se divida en varias líneas */
+}
+
+.btn-warning, .btn-danger, .btn-success {
+    padding: 10px 20px; /* Botones más grandes */
+    font-size: 1rem; /* Aumenta el tamaño de los botones */
+    border-radius: 5px;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+}
+
+.btn-success {
+    background-color: #28a745;
+}
+
+.btn-block {
+    margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%; /* Barra lateral ocupa el 100% del ancho en pantallas pequeñas */
+        position: relative;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}
